@@ -9,6 +9,7 @@ import shutil
 import os
 import glob
 from decouple import config
+from dotenv import load_dotenv
 
 # Path to the downloaded zip file
 zip_file_path = "/home/ricardo/Downloads/Fatura-CPF.zip"
@@ -38,7 +39,7 @@ file = "invoice"
 
 target_extension = ".csv"
 
-destination_directory = "/home/ricardo/code/statistic/src"
+destination_directory = "/home/ricardo/programing/statistic/src"
 
 destination_file_path = None  # Initialize the variable outside the loop
 
@@ -59,7 +60,11 @@ if destination_file_path:
 
 
 #! rename this variable to save the file according to the invoice month
+<<<<<<< HEAD
 month = "2025-02"
+=======
+month = "2025-03"
+>>>>>>> 0f8d9936 (staging)
 
 # Read the CSV file with the specified delimiter
 df = pd.read_csv('invoice.csv', delimiter=';')
