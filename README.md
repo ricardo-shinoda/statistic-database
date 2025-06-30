@@ -6,16 +6,17 @@
 
 #### To update Account_mvt (all the movements from the account)
 
-- First activate .venv (source .venv/bin/activate)
+<!-- - First activate .venv (source .venv/bin/activate)
 - Download the file from the app (do it monthly)
 - Rename to: account_mvt.pdf
 - Move to /home/ricardo/code/statistic
 - run: `python3 converter_pdf_json.py (from the src)`
 - rename the output to: yyyy-mm.json
-- Move file renamed to src/account_mvt/json
+- Move file renamed to src/account_mvt/json -->
 
 ### [control4.py] To update Credit Card invoices:
 
+<<<<<<< HEAD
 ### This code does:
 
 - extract from .zip
@@ -23,11 +24,15 @@
 - move Controle to this repository
 - run the code
 
+=======
+- First activate .venv (source .venv/bin/activate)
+>>>>>>> 0f8d9936 (staging)
 - From the C6 App, download the invoice .csv file to my /home/Download (From email)
 - Download the latest version of Controle.xsls from G-drive
 - Rename Controle file to just Controle.xsls
   `mv /home/ricardo/Downloads/Controle*.xlsx /home/ricardo/Downloads/Controle.xlsx`
 - Then move to the project
+<<<<<<< HEAD
   `mv /home/ricardo/Downloads/Controle.xlsx /home/ricardo/code/statistic/src`
 - Don´t forget to update variable "month" on control.py -"yyyy-mm" line
   `python3 control4.py`
@@ -40,10 +45,15 @@
     - Download the invoice from the app to email and fom the email to this computer (Download folder)
     - on control4.py file, rename the month.
     - run the commands below
+=======
+    `mv /home/ricardo/Downloads/Controle.xlsx /home/ricardo/programing/statistic/src`
+- Don´t forget to update variable "month" on control.py -"yyyy-mm" line 
+    `python3 control4.py`
+>>>>>>> 0f8d9936 (staging)
 
 ```shell
 mv /home/ricardo/Downloads/Controle*.xlsx /home/ricardo/Downloads/Controle.xlsx
-mv /home/ricardo/Downloads/Controle.xlsx /home/ricardo/code/statistic/src
+mv /home/ricardo/Downloads/Controle.xlsx /home/ricardo/programing/statistic/src
 python3 control4.py
 ```
 
@@ -53,7 +63,7 @@ Good to use if I manually convert the file, also good to test correct file that 
 
 ```shell
 mv /home/ricardo/Downloads/Controle*.xlsx /home/ricardo/Downloads/Controle.xlsx
-mv /home/ricardo/Downloads/Controle.xlsx /home/ricardo/code/statistic/src
+mv /home/ricardo/Downloads/Controle.xlsx /home/ricardo/programing/statistic/src
 python3 control3.py
 ```
 
