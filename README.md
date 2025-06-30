@@ -16,7 +16,6 @@
 
 ### [control4.py] To update Credit Card invoices:
 
-- First activate .venv (source .venv/bin/activate)
 - From the C6 App, download the invoice .csv file to my /home/Download (From email)
 - Download the latest version of Controle.xsls from G-drive
 - Rename Controle file to just Controle.xsls
