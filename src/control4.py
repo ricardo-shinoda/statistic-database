@@ -60,11 +60,7 @@ if destination_file_path:
 
 
 #! rename this variable to save the file according to the invoice month
-<<<<<<< HEAD
-month = "2025-02"
-=======
 month = "2025-03"
->>>>>>> 0f8d9936 (staging)
 
 # Read the CSV file with the specified delimiter
 df = pd.read_csv('invoice.csv', delimiter=';')
@@ -77,7 +73,7 @@ print("First Few Rows:\n", df.head())
 df = df[df['Descrição'] != 'Inclusao de Pagamento    ']
 
 # Load the description mapping from the JSON file
-with open('/home/ricardo/code/statistic/src/description.json') as f:
+with open('/home/ricardo/programing/statistic/src/description.json') as f:
     description_list = json.load(f)
 
 # Convert the list of dictionaries to a dictionary
@@ -119,7 +115,7 @@ except KeyError as e:
         f"KeyError: {e}. Check if the column 'Valor (em R$)' is present in the DataFrame.")
 
 # Save both DataFrames to a single sheet in a new Excel file, with the summary table on the right of the original data
-with pd.ExcelWriter(f'/home/ricardo/code/statistic/src/credit_card/xlsx/{month}.xlsx', engine='openpyxl') as writer:
+with pd.ExcelWriter(f'/home/ricardo/programing/statistic/src/credit_card/xlsx/{month}.xlsx', engine='openpyxl') as writer:
     df.to_excel(writer, sheet_name='Data', index=False, startrow=0, startcol=0)
     category_sum.to_excel(writer, sheet_name='Data', index=False,
                           startrow=0, startcol=df.shape[1] + 1, header=True)
@@ -137,7 +133,7 @@ df = pd.read_csv('invoice.csv', delimiter=';')
 
 data = df.to_dict(orient='records')
 
-with open(f'/home/ricardo/code/statistic/src/credit_card/json/{month}.json', 'w', encoding='utf-8') as json_file:
+with open(f'/home/ricardo/programing/statistic/src/credit_card/json/{month}.json', 'w', encoding='utf-8') as json_file:
     json.dump(data, json_file, indent=4, ensure_ascii=False)
 
 print("Conversion complete. Data saved on 'output.json'.")
@@ -151,8 +147,8 @@ print(f'Conversion complete, Data and Summary saved in {month}.xlsx.')
 file_name = month
 
 # Especificação dos arquivos de origem e destino
-source_file_path = f'/home/ricardo/code/statistic/src/credit_card/xlsx/{file_name}.xlsx'
-target_file_path = '/home/ricardo/code/statistic/src/Controle.xlsx'
+source_file_path = f'/home/ricardo/programing/statistic/src/credit_card/xlsx/{file_name}.xlsx'
+target_file_path = '/home/ricardo/programing/statistic/src/Controle.xlsx'
 
 # Nome da aba de origem e nome da nova aba de destino
 source_sheet_name = 'Data'
