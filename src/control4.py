@@ -60,7 +60,7 @@ if destination_file_path:
 
 
 #! rename this variable to save the file according to the invoice month
-month = "2025-03"
+month = "2025-06"
 
 # Read the CSV file with the specified delimiter
 df = pd.read_csv('invoice.csv', delimiter=';')
