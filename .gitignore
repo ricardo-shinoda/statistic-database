@@ -1,8 +1,8 @@
-# *.venv
-# *.env
-# *.xlsx
-# *.csv
-# *.json
-# *.pdf
-# *.jpg
+*.venv
+*.env
+*.xlsx
+*.csv
+*.json
+*.pdf
+*.jpg
 
