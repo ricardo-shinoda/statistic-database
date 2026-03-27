@@ -3,7 +3,6 @@ charset-normalizer==3.3.0
 et-xmlfile==1.1.0
 idna==3.4
 numpy>=2.0.0
-openpyxl==3.1.2
 python-dateutil==2.8.2
 pytz==2023.3.post1
 requests==2.31.0
@@ -13,5 +12,5 @@ tzdata==2023.3
 urllib3==2.0.7
 google-api-python-client==2.145.0
 openpyxl==3.1.5
-pandas==2.2.2
+pandas>=3.0.1
 oauthlib==3.2.2
