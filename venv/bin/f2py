@@ -1,4 +1,4 @@
-#!/home/ricardo/study/statistic/venv/bin/python3
+#!/Users/ricardo/study/statistic/venv/bin/python3.12
 import sys
 from numpy.f2py.f2py2e import main
 if __name__ == '__main__':
