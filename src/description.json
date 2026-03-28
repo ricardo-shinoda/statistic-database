@@ -1,1502 +1,1877 @@
 [
   {
     "original": "BRINKEKA",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "GYMPASS GYMPASSBR",
-    "new": "Saúde / Atividade Física"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Atividade Física"
   },
   {
     "original": "DROGARIA ONLINE",
-    "new": "Saúde / Medicamento"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "SORVETERIA PINGUIM",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "IZ BANCA JAMIL E CIDA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PG PRIMEIRAMESA PRIME",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "AMAZONPRIMEBR",
-    "new": "Assinatura / Streaming"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Streaming"
   },
   {
     "original": "MP PORCARIABBQ",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "OTICA SNELL",
-    "new": "Ótica"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Ótica"
   },
   {
     "original": "PAG MARISAYOSHIE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "CHAVEIRO DESTAK",
-    "new": "Papelaria"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "ANDREA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG MARIANACUNHABASTO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "ORANGO MANGO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PORCARIABBQ",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "4033 SAMS BAURU",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "ESPETINHODEF",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "MP ESPETINHODEF",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "ABASTEC ABASTECE AI",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "BARBEARIA DAVID RAMALH",
-    "new": "Barbearia"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Barbearia"
   },
   {
     "original": "TAYAYA AQUA RESORT",
-    "new": "Viagem"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Hospedagem"
   },
   {
     "original": "MERCPAGO PAOCASEI",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "TENDA ATACADO S A",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "PAG CRMEDPRODUTOSHOSP",
-    "new": "Artigos Pessoais"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Higiene e Cosméticos"
   },
   {
     "original": "MERCPAGO PORCARIA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "MERCADOLIVRE MULTIIMP",
-    "new": "Papelaria"
+    "categoria": "Educação",
+    "subcategoria": "Material Escolar"
   },
   {
     "original": "MP ANDREA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "MP PAOCASEIRO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "BLUE TREE TH BLUETREEL",
-    "new": "Viagem"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Hospedagem"
   },
   {
     "original": "AMERICANAS OLIST STO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG SVAUTOMECANICA",
-    "new": "Manutenção / Carro"
+    "categoria": "Transporte",
+    "subcategoria": "Manutenção de Veículo"
   },
   {
     "original": "FERGAS GAS E AGUA",
-    "new": "Gás"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utilidades"
   },
   {
     "original": "GOOMER SOBERANOBURERDE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "F E BASSETTO PNEUS E",
-    "new": "Manutenção / Carro / Pneu"
+    "categoria": "Transporte",
+    "subcategoria": "Manutenção de Veículo"
   },
   {
     "original": "DIGITAL COPY CENTER",
-    "new": "Documentos / Impressões"
+    "categoria": "Educação",
+    "subcategoria": "Impressões e Papelaria"
   },
   {
     "original": "Combustível",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "KOKONGA GASTRO BAR",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG JAQUELINENEBO",
-    "new": "Barbearia"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Barbearia"
   },
   {
     "original": "MP VLADISTATTOO",
-    "new": "Lazer / Tattoo"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Estética e Tatuagem"
   },
   {
     "original": "PAG RICARDOTOSHIO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "GOOGLE KING",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "LEVIS LEVIS",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "3753DROGASIL",
-    "new": "Saúde / Medicamento"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "MUSTACHE BAURU",
-    "new": "Barbearia"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Barbearia"
   },
   {
     "original": "PAG OTICABRAGA",
-    "new": "Ótica"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Ótica"
   },
   {
     "original": "3753DROGASIL",
-    "new": "Saúde / Medicamento"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "FONTE DI BELLE",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "PAG MARIANACUNHABASTO",
-    "new": "Lazer / Tattoo"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Estética e Tatuagem"
   },
   {
     "original": "LOPRETO L ESTETICA",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "BRINKEKA",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "BENEDETTO GELATERIA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "SR SORVETE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "SORVETERIA GYGABON",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "LUSO BAURU",
-    "new": "Club"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "COMNACHOS",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG VIVIANEDASILVA",
-    "new": "Saúde / Dentista"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Dentista"
   },
   {
     "original": "DENTAL ORTO LINE COME",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "CROOCODILO",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "PAG ZIGPAY",
-    "new": "TBD"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Outros Serviços"
   },
   {
     "original": "MP SHELLBOX",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "GOOGLE YOUTUBEPREMIUM",
-    "new": "Assinatura / Streaming"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Streaming"
   },
   {
     "original": "IFOOD IFOODBR CLUBE",
-    "new": "Ifood - club"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "IFOOD *CLUBE *IFOOD",
-    "new": "Ifood - club"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "CARREFOUR SAMS BAURU 1",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "POSTO AEROPORTO - LK 2",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "POSTO ARAUJO LEITE",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "HOTEL PREMIUM NORTE",
-    "new": "Viagem"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Hospedagem"
   },
   {
     "original": "MERCADOLIVRE TAKESTOR",
-    "new": "Artigos pessoais"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "DM UDEMY",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Cursos Online"
   },
   {
     "original": "MERCADOLIVRE GONGZHEN",
-    "new": "Artigos pessoais"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "PAG*THIAGODEALCANTARA",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "NEXUS8",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "PAG*VESTCASA",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "EQUIPEGUINAF",
-    "new": "TBD"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "PAG*MARISAYOSHIE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "4033 - SAMS BAURU",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "PAG*ZIG",
-    "new": "TBD"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Outros Serviços"
   },
   {
     "original": "MP *ABAFE",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "ABASTEC*ABASTECE AI",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "PRADAO AUTO CENTER",
-    "new": "Manutenção / Carro"
+    "categoria": "Transporte",
+    "subcategoria": "Manutenção de Veículo"
   },
   {
     "original": "DM *OPEN ENGLISH BR",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Cursos Online"
   },
   {
     "original": "PAG*CLEIDEFATIMA",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "PAG*MARISAYOSHIE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG*GINEZFERNANDES",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PP INGRESSOS",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "BAURU",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "-",
-    "new": "Reembolso"
+    "categoria": "Reembolsos",
+    "subcategoria": "Reembolsos"
   },
   {
     "original": "UBER UBER TRIP",
-    "new": "Transporte Aplicativo"
+    "categoria": "Transporte",
+    "subcategoria": "Aplicativos de Transporte"
   },
   {
     "original": "RI HAPPY",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "PP INGRESSOS",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "PAG WANDERLEYBORGES",
-    "new": "Transporte Aplicativo"
+    "categoria": "Transporte",
+    "subcategoria": "Aplicativos de Transporte"
   },
   {
     "original": "PAG RDCULTURAL",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Transporte",
+    "subcategoria": "Aplicativos de Transporte"
   },
   {
     "original": "MERCADOLIVRE TAKESTOR",
-    "new": "Papelaria"
+    "categoria": "Educação",
+    "subcategoria": "Material Escolar"
   },
   {
     "original": "VINTAGE SHOP COMERCIO",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "MERCADOLIVRE*CLIMASOFT",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE GONGZHEN",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "99APP *99APP",
-    "new": "Transporte Aplicativo"
+    "categoria": "Transporte",
+    "subcategoria": "Aplicativos de Transporte"
   },
   {
     "original": "MP*SHELLBOX",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "MERCADOLIVRE*MERCADOLI",
-    "new": "Papelaria"
+    "categoria": "Educação",
+    "subcategoria": "Material Escolar"
   },
   {
     "original": "ACADEMIA CROSS M 8 LT",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PADOKADOALF",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG*CLAUDIAZANINI",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "MP *EDUARDO",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "GOOGLE STORAGE",
-    "new": "Internet / Armazenamento"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Armazenamento em Nuvem"
   },
   {
     "original": "MULTIPLEX BAURU SHOPPI",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "AUTO POSTO ALAMEDA",
-    "new": "Manutenção / Carro"
+    "categoria": "Transporte",
+    "subcategoria": "Manutenção de Veículo"
   },
   {
     "original": "MP *DINO",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "BLUE TREE THERMAS DE L",
-    "new": "Viagem"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Hospedagem"
   },
   {
     "original": "EC SHELLBOX",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "BERLINF AC SHOPPING CE",
-    "new": "TBD"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "DIGITAL FLEX BAURU",
-    "new": "Papelaria"
+    "categoria": "Educação",
+    "subcategoria": "Impressões e Papelaria"
   },
   {
     "original": "3753DROGASIL",
-    "new": "Saúde / Medicamento"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "99APP *99APP",
-    "new": "Transporte Aplicativo"
+    "categoria": "Transporte",
+    "subcategoria": "Aplicativos de Transporte"
   },
   {
     "original": "ABASTEC ABASTECE AI",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "ABASTEC*ABASTECE AI",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "ACADEMIA CROSS M 8 LT",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "ALIEXPRESS",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "AMAZON BR",
-    "new": "TBD"
+    "categoria": "Compras Online",
+    "subcategoria": "Marketplace"
   },
   {
     "original": "AMAZON COM BR",
-    "new": "TBD"
+    "categoria": "Compras Online",
+    "subcategoria": "Marketplace"
   },
   {
     "original": "AMAZON COM BR DIGITAL",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "AMAZON MARKETPLACE",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "AMAZON PRIME CANAIS",
-    "new": "Assinatura / Streaming"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Streaming"
   },
   {
     "original": "AMERICAN CORNER ESCOLA",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Cursos Online"
   },
   {
     "original": "AMERICANAS OLIST STO",
-    "new": "TBD"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "ANDREA",
-    "new": "TBD"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "ATACASA UTILIDADES",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "AUTO POSTO ALAMEDA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "BARBEARIA DAVID RAMALH",
-    "new": "Barbearia"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Barbearia"
   },
   {
     "original": "BAURU",
-    "new": "TBD"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "BAURU LIFE",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "BENEDETTO GELATERIA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "BERLIN EMDURB",
-    "new": "Estacionamento"
+    "categoria": "Transporte",
+    "subcategoria": "Estacionamento"
   },
   {
     "original": "BERLINF AC SHOPPING CE",
-    "new": "TBD"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "BLUE TREE TH BLUETREEL",
-    "new": "Viagem"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Hospedagem"
   },
   {
     "original": "BLUE TREE THERMAS DE L",
-    "new": "Viagem"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Hospedagem"
   },
   {
     "original": "BRASTEMP E REDE",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "BRINKEKA",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "BRITANIA ELETRONICOS S",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "BROSCO GELATERIA LTDA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "BRUNO MARTINS CONTI 3",
-    "new": "TBD"
+    "categoria": "TBD",
+    "subcategoria": "Aguardando Classificação"
   },
   {
     "original": "CACAU SHOW",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "CANARIO BEBIDAS 2",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "CARREFOUR SAMS BAURU 1",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "CASA DO QUEIJO QUILOMB",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "CASAS PERNANBUCANAS",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "CDB CENTRO DE DIAGNOS",
-    "new": "Exames"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Exames e Consultas"
   },
   {
     "original": "CENTAURO COM BR",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "CHAVEIRO DESTAK",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "COBASI BAURU",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "COISA BOA DO CHEFE MOA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "COMNACHOS",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "CROCODILLO",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "CROOCODILO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "DANUS BOULEVARD GD",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "DAUNS BAURU SHOPPING",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "DENTAL ORTO LINE COME",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "DIGITAL COPY CENTER",
-    "new": "Documentos / Impressões"
+    "categoria": "Educação",
+    "subcategoria": "Impressões e Papelaria"
   },
   {
     "original": "DIGITAL FLEX BAURU",
-    "new": "Documentos / Impressões"
+    "categoria": "Educação",
+    "subcategoria": "Impressões e Papelaria"
   },
   {
     "original": "DM *OPEN ENGLISH BR",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Cursos Online"
   },
   {
     "original": "DM UDEMY",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Cursos Online"
   },
   {
     "original": "DROGARIA ONL",
-    "new": "Saúde / Medicamento"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "DROGARIA ONLINE",
-    "new": "Saúde / Medicamento"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "DROGASIL 1268",
-    "new": "Saúde / Medicamento"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "EA PRODUCAO E EVENTOS",
-    "new": "TBD"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "EC ALIPAYBRASIL",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "EC SHELLBOX",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "ELETRO GLOBO",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "EMPPORIUM",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "EQUIPEGUINAF",
-    "new": "TBD"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "ESPETINHODEF",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "F F DALLAQUA PIZZAR",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "F E BASSETTO PNEUS E",
-    "new": "Manutenção / Carro"
+    "categoria": "Transporte",
+    "subcategoria": "Manutenção de Veículo"
   },
   {
     "original": "FARMACIA E DROGARIA NI",
-    "new": "Saúde / Medicamento"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "FARMASUL",
-    "new": "Saúde / Medicamento"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "FERGAS GAS E AGUA",
-    "new": "Gás"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utilidades"
   },
   {
     "original": "FONTE DI BELLE",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "GABRIEL AMORIM NARDI",
-    "new": "TBD"
+    "categoria": "TBD",
+    "subcategoria": "Aguardando Classificação"
   },
   {
     "original": "GABRIEL DE ALCANTARA",
-    "new": "TBD"
+    "categoria": "TBD",
+    "subcategoria": "Aguardando Classificação"
   },
   {
     "original": "GIRASSOL RESTAURANTE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "GOOGLE KING",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "GOOGLE KING",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "GOOGLE STORAGE",
-    "new": "Internet / Armazenamento"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Armazenamento em Nuvem"
   },
   {
     "original": "GOOGLE STORAGE",
-    "new": "Internet / Armazenamento"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Armazenamento em Nuvem"
   },
   {
     "original": "GOOGLE YOUTUBEPREMIUM",
-    "new": "Assinatura / Streaming"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Streaming"
   },
   {
     "original": "GOOGLE YOUTUBEPREMIUM",
-    "new": "Assinatura / Streaming"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Streaming"
   },
   {
     "original": "GOOMER SOBERANOBURERDE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "GYMPASS GYMPASSBR",
-    "new": "Saúde / Atividade Física"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Atividade Física"
   },
   {
     "original": "HAVAN BAURU",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "HNA*O BOTICARIO",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Higiene e Cosméticos"
   },
   {
     "original": "HNA*OBOTICARIO",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Higiene e Cosméticos"
   },
   {
     "original": "HOTEL PREMIUM NORTE",
-    "new": "Lazer / Estadia / Viagem"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Hospedagem"
   },
   {
     "original": "HUB *NETSHOES",
-    "new": "Calçado"
+    "categoria": "Vestuário",
+    "subcategoria": "Calçados"
   },
   {
     "original": "HUB FINTECH *NETSHOES",
-    "new": "Calçado"
+    "categoria": "Vestuário",
+    "subcategoria": "Calçados"
   },
   {
     "original": "HUBFINTECH NETSHOES",
-    "new": "Calçado"
+    "categoria": "Vestuário",
+    "subcategoria": "Calçados"
   },
   {
     "original": "HUBFINTECH ZATTINI",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "IFD*LETICIA CORREIA RA",
-    "new": "TBD"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "IFD*SR SORVETE BAURU C",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "IFD*YAKISSOBAS",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "IFOOD IFOODBR CLUBE",
-    "new": "Ifood - club"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "IFOOD SALGADOS QUEI",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "IFOOD *CLUBE *IFOOD",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "IFOOD *CLUBE *IFOOD",
-    "new": "Ifood - club"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "IFOOD *IFD*PAO DE AC",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "IM* KEYCHRON.COM +1",
-    "new": "Utensílios Computador"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "IZ BANCA JAMIL E CIDA",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "JALOVI LIVRARIA",
-    "new": "Material Escolar"
+    "categoria": "Educação",
+    "subcategoria": "Material Escolar"
   },
   {
     "original": "JLV LIVRARIA LTDA",
-    "new": "Material Escolar"
+    "categoria": "Educação",
+    "subcategoria": "Material Escolar"
   },
   {
     "original": "JOLIE CAFE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "KALUNGA.COM",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "KOKONGA GASTRO BAR",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "LANCHONETE ZOO",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "LEVIS LEVIS",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "LOJA MELISSA",
-    "new": "Calçado"
+    "categoria": "Vestuário",
+    "subcategoria": "Calçados"
   },
   {
     "original": "LOJACONVENIENCIA UNIVE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "LOJAS AMERICANAS 296",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "LOPRETO L ESTETICA",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "LUSO BAURU",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "MAGAPAY ZOOKE",
-    "new": "TBD"
+    "categoria": "TBD",
+    "subcategoria": "Aguardando Classificação"
   },
   {
     "original": "MASSAS E SALG OSHIRO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "MATHEVI",
-    "new": "Material Escolar"
+    "categoria": "Educação",
+    "subcategoria": "Material Escolar"
   },
   {
     "original": "MATHEVI LIVRARIA E PAP",
-    "new": "Documentos / Impressões"
+    "categoria": "Educação",
+    "subcategoria": "Impressões e Papelaria"
   },
   {
     "original": "MERCADOLIVRE ANABEATR",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "MERCADOLIVRE CASAPAUL",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE DDMAQUINA",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "MERCADOLIVRE EDERTORR",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE ELETROFE",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "MERCADOLIVRE FCACOMER",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE GONGZHEN",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE INJETECH",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE LUNNAMIX",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE MULTIIMP",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE NABOX",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE SUPERSAL",
-    "new": "Material Escolar"
+    "categoria": "Educação",
+    "subcategoria": "Material Escolar"
   },
   {
     "original": "MERCADOLIVRE TAKESTOR",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE*CLIMASOFT",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE*FILTRODEB",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE*GONGZHEN",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE*MERCADOLI",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE*SELETOST",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCPAGO PAOCASEI",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "MERCPAGO PORCARIA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "MLP NETSHOES",
-    "new": "Calçado"
+    "categoria": "Vestuário",
+    "subcategoria": "Calçados"
   },
   {
     "original": "MODA COM ARTE",
-    "new": "TBD"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "MOTORISTA POR APLICATI",
-    "new": "Transporte Aplicativo"
+    "categoria": "Transporte",
+    "subcategoria": "Aplicativos de Transporte"
   },
   {
     "original": "MP ANDREA",
-    "new": "TBD"
+    "categoria": "Alimentação",
+    "subcategoria": "Delivery"
   },
   {
     "original": "MP ESPETINHODEF",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "MP JRREFRIGER",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "MP PAOCASEIRO",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "MP PORCARIABBQ",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "MP QUEROPASSAGEM",
-    "new": "Transporte Coletivo"
+    "categoria": "Transporte",
+    "subcategoria": "Transporte Coletivo"
   },
   {
     "original": "MP QUEROPASSAGEM",
-    "new": "Transporte Coletivo"
+    "categoria": "Transporte",
+    "subcategoria": "Transporte Coletivo"
   },
   {
     "original": "MP VLADISTATTOO",
-    "new": "Lazer / Tattoo"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Estética e Tatuagem"
   },
   {
     "original": "MP *ABAFE",
-    "new": "TBD"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MP *DINO",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "MP *EDUARDO",
-    "new": "TBD"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "MP *OLLIECOSMETICOS",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Higiene e Cosméticos"
   },
   {
     "original": "MP *VITORIAPAVANH",
-    "new": "TBD"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "MP SHELLBOX",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "MP SHELLBOX",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "MP*SHELLBOX",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "MULTIPLEX BAURU SHOPPI",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "MUSTACHE BAURU",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "NA BRASA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "NACOES UNIDAS COMERCI",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "NETFLIX COM",
-    "new": "Assinatura / Streaming"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Streaming"
   },
   {
     "original": "NETFLIX.COM",
-    "new": "Assinatura / Streaming"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Streaming"
   },
   {
     "original": "NEXUS8",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "NEXUS8",
-    "new": "TBD"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "NUTTY BAVARIAN",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "OPHICINA FOOTWEAR ESPL",
-    "new": "Calçado"
+    "categoria": "Vestuário",
+    "subcategoria": "Calçados"
   },
   {
     "original": "ORANGO MANGO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "ORTOBOM",
-    "new": "Cama / Mesa / Banho"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "OSCAR CALCADOS",
-    "new": "Calçado"
+    "categoria": "Vestuário",
+    "subcategoria": "Calçados"
   },
   {
     "original": "OTICA SNELL",
-    "new": "Ótica"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Ótica"
   },
   {
     "original": "PADOKADOALF",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG ANDREAAPARECIDADA",
-    "new": "TBD"
+    "categoria": "TBD",
+    "subcategoria": "Aguardando Classificação"
   },
   {
     "original": "PAG BUFFETPIPOCA",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "PAG CRMEDPRODUTOSHOSP",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "PAG ESMALTERIAUNHAS",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "PAG JAQUELINENEBO",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "PAG JIMBURGERCO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG MADEIREIRASANTA",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "PAG MARIANACUNHABASTO",
-    "new": "Lazer / Tattoo"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Estética e Tatuagem"
   },
   {
     "original": "PAG MARISAYOSHIE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG MASSASESALGADOSOS",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG NANCIROSA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG OTICABRAGA",
-    "new": "Ótica"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Ótica"
   },
   {
     "original": "PAG RDCULTURAL",
-    "new": "Transporte Coletivo"
+    "categoria": "Transporte",
+    "subcategoria": "Transporte Coletivo"
   },
   {
     "original": "PAG RENNER",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "PAG RICARDOCESARNABAO",
-    "new": "Celular / Plano / Manutenção"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Planos de Celular"
   },
   {
     "original": "PAG RICARDOTOSHIO",
-    "new": "TBD"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG RONALDODONIZETISA",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "PAG ROTABEER",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG SUPERBOM",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "PAG SVAUTOMECANICA",
-    "new": "Manutenção / Carro"
+    "categoria": "Transporte",
+    "subcategoria": "Manutenção de Veículo"
   },
   {
     "original": "PAG TAKASHIIKEDA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG TAPIOCA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG TOKUHARAPASTEL",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG VALDIMEIRE",
-    "new": "TBD"
+    "categoria": "TBD",
+    "subcategoria": "Aguardando Classificação"
   },
   {
     "original": "PAG VIVIANEDASILVA",
-    "new": "TBD"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Dentista"
   },
   {
     "original": "PAG VOSSABREJA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG WANDERLEYBORGES",
-    "new": "Transporte Aplicativo"
+    "categoria": "Transporte",
+    "subcategoria": "Aplicativos de Transporte"
   },
   {
     "original": "PAG ZIGPAY",
-    "new": "TBD"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Outros Serviços"
   },
   {
     "original": "PAG*BAURU",
-    "new": "TBD"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "PAG*CLAUDIAZANINI",
-    "new": "TBD"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG*CLEIDEFATIMA",
-    "new": "TBD"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "PAG*COMSURF",
-    "new": "TBD"
+    "categoria": "TBD",
+    "subcategoria": "Aguardando Classificação"
   },
   {
     "original": "PAG*GINEZFERNANDES",
-    "new": "TBD"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG*INDIANACHOPP",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG*JAQUELINENEBO",
-    "new": "TBD"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Barbearia"
   },
   {
     "original": "PAG*OSVALDOMARIANODO",
-    "new": "TBD"
+    "categoria": "TBD",
+    "subcategoria": "Aguardando Classificação"
   },
   {
     "original": "PAG*REYNALDOOVOS",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "PAG*THIAGODEALCANTARA",
-    "new": "TBD"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "PAG*TOKUHARAPASTEL",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAG*VESTCASA",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "PAG*ZIG",
-    "new": "TBD"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Outros Serviços"
   },
   {
     "original": "PAGUE MENOS 650",
-    "new": "TBD"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Medicamentos"
   },
   {
     "original": "PASTELARIA",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PAYGO*CHICLE MODA FITN",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "PG TON BOLA DOCES C",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PG TON KUSKO",
-    "new": "TBD"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PG *TON PORCARIA BBQ",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PICPAY RECARGACEL",
-    "new": "Celular / Plano / Manutenção"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Planos de Celular"
   },
   {
     "original": "PLAY PARK EVENTOS LTD",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "POPCORN GOURMET",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PORCARIABBQ",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "PORTO SEGURO SEGUROS",
-    "new": "Seguro / Casa / Carro / Vida"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Seguros"
   },
   {
     "original": "POSTO AEROPORTO - LK 2",
-    "new": "TBD"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "POSTO ARAUJO LEITE",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "PP INGRESSOS",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "PP MTUPPERWARE",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "PRADAO AUTO CENTER",
-    "new": "Manutenção / Carro"
+    "categoria": "Transporte",
+    "subcategoria": "Manutenção de Veículo"
   },
   {
     "original": "R DEGANI",
-    "new": "TBD"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "RESTAURANTE E LANCHONE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "RI HAPPY",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "RICARDO CESAR NABAO",
-    "new": "Celular / Plano / Manutenção"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Planos de Celular"
   },
   {
     "original": "RODOSNACK TOPAZIO LANC",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "SANTIAGO",
-    "new": "TBD"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "SERVICOS CLA*149880217",
-    "new": "Celular / Plano / Manutenção"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Planos de Celular"
   },
   {
     "original": "SESI SERVICO SOCIAL DA",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Cursos Online"
   },
   {
     "original": "SIMONE YOSHIKO UMETSU",
-    "new": "Saúde / Dentista"
+    "categoria": "Saúde e Bem-estar",
+    "subcategoria": "Dentista"
   },
   {
     "original": "SODIE DOCES BAURU",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "SORVETERIA PINGUIM",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "SR SORVETE",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "SUPER CARS",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "SUPERCARS BAURU 2",
-    "new": "Lazer / Festas"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Eventos e Festas"
   },
   {
     "original": "TAYAYA AQUA RESORT",
-    "new": "Lazer / Estadia / Viagem"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Hospedagem"
   },
   {
     "original": "TENDA ATACADO S A",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "TOKUHARA PASTEIS",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "UBER UBER TRIP",
-    "new": "Transporte Aplicativo"
+    "categoria": "Transporte",
+    "subcategoria": "Aplicativos de Transporte"
   },
   {
     "original": "VANS *ORDER86489593",
-    "new": "Calçado"
+    "categoria": "Vestuário",
+    "subcategoria": "Calçados"
   },
   {
     "original": "VILA DE SAO FRANCISCO",
-    "new": "Restaurante / Lanchonete / Bar"
+    "categoria": "Alimentação",
+    "subcategoria": "Restaurantes e Lanchonetes"
   },
   {
     "original": "VINDI CUBERBRASILCUB",
-    "new": "Presente"
+    "categoria": "Presentes e Doações",
+    "subcategoria": "Presentes"
   },
   {
     "original": "VINTAGE SHOP COMERCIO",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "PAG MARCIAROSADE",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "DENTAL ORTO",
-    "new": "Ótica"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Ótica"
   },
   {
     "original": "A NARDO MACHADO",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "MERCADOLIVRE LOJAJAU",
-    "new": "Manutenção / Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Reparos e Serviços"
   },
   {
     "original": "ACQ ANTONIO FAUSTO DE",
-    "new": "Manutenção / Carro"
+    "categoria": "Transporte",
+    "subcategoria": "Manutenção de Veículo"
   },
   {
     "original": "PAG ROQUEDALAQUA",
-    "new": "Cuidado pessoal / Higiene / Saúde / Estética"
+    "categoria": "Cuidados Pessoais",
+    "subcategoria": "Estética"
   },
   {
     "original": "MERCADOLIVRE PICHAUMP",
-    "new": "Utensílios Computador"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "DM UDEMY",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Cursos Online"
   },
   {
     "original": "UDEMY",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Cursos Online"
   },
   {
     "original": "LOJAS SUMIRE",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "AAI     AAI IPIRANGA",
-    "new": "Combustível"
+    "categoria": "Transporte",
+    "subcategoria": "Combustível"
   },
   {
     "original": "MP  NEWSTARZOO",
-    "new": "Lazer / Entretenimento"
+    "categoria": "Lazer e Viagens",
+    "subcategoria": "Entretenimento"
   },
   {
     "original": "DM  BRAINLY 27 09",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Cursos Online"
   },
   {
     "original": "4033   SAMS BAURU",
-    "new": "Supermercados / Mercearia / Padarias / Lojas de Conveniência"
+    "categoria": "Alimentação",
+    "subcategoria": "Supermercado"
   },
   {
     "original": "CASASBAHIA",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "MERCADOLIVRE MERCADOL",
-    "new": "Estudo"
+    "categoria": "Educação",
+    "subcategoria": "Material Escolar"
   },
   {
     "original": "MERCADOLIVRE LOJASNAN",
-    "new": "Utensílios Casa"
+    "categoria": "Casa e Manutenção",
+    "subcategoria": "Utensílios e Eletrodomésticos"
   },
   {
     "original": "HERING OUTLETESPACOH",
-    "new": "Vestuário / Roupas"
+    "categoria": "Vestuário",
+    "subcategoria": "Roupas"
   },
   {
     "original": "99APP       *99APP",
-    "new": "Transporte Aplicativo"
+    "categoria": "Transporte",
+    "subcategoria": "Aplicativos de Transporte"
   },
   {
     "original": "GOOGLE YOUTUBE VIDEOS",
-    "new": "Assinatura / Streaming"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Streaming"
   },
   {
     "original": "TV por assinatura / Serviços de rádio",
-    "new": "Assinatura / Streaming"
+    "categoria": "Assinaturas e Serviços",
+    "subcategoria": "Streaming"
   }
 ]
