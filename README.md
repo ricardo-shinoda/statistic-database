@@ -85,3 +85,10 @@ Download File
 Search Files
 
     - search for files with .csv on /Downloads/invoice and convert it to .xlsx
+
+
+# UPDATING DESCRIPTIONS
+### Id needed to add a new description (new vendor without correct description), we need to run:
+```bash
+python3 src/script/load_mapping.py
+``
