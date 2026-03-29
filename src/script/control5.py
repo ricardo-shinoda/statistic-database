@@ -1,212 +1,155 @@
-from googleapiclient.http import MediaFileUpload
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-import openpyxl
-import pandas as pd
-import json
+import os
 import zipfile
 import shutil
-import os
-import glob
+import pandas as pd
+from sqlalchemy import create_engine, text
 from decouple import config
-from dotenv import load_dotenv
 
-# Path to the downloaded zip file
-zip_file_path = "/home/ricardo/Downloads/Fatura-CPF.zip"
+# --- 1. SET THE MONTH HERE ---
+CURRENT_MONTH = "2019-12" 
 
-# Password for the zip file
-zip_password = config('ZIP_PASSWORD')
+# --- 2. CONFIGURATION & PATHS ---
+DB_URL = 'postgresql://ricardo:3136@localhost:5432/statistic_db'
+ZIP_PATH = "/home/ricardo/Downloads/Fatura-CPF.zip"
+ZIP_PASSWORD = config('ZIP_PASSWORD')
 
-# Extract the contents of the zip file
-extracted_folder = "/home/ricardo/Downloads"
-with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
-    zip_ref.extractall(extracted_folder, pwd=bytes(zip_password, 'utf-8'))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+LAKE_DIR = os.path.join(BASE_DIR, "data_lake/raw_invoices")
+CONTROLE_XLSX = os.path.join(BASE_DIR, "src/Controle.xlsx")
 
-# Find the path of the CSV file inside the extracted folder
-csv_files = glob.glob(os.path.join(extracted_folder, '*.csv'))
+engine = create_engine(DB_URL)
 
-if csv_files:
-    # Use the first CSV file found (you may want to implement specific logic if there are multiple CSV files)
-    extracted_text_file = csv_files[0]
+def ingest_and_archive(invoice_month):
+    year = invoice_month.split('-')[0]
+    target_folder = os.path.join(LAKE_DIR, year)
+    os.makedirs(target_folder, exist_ok=True)
+    
+    if not os.path.exists(ZIP_PATH):
+        print(f"ℹ️ ZIP not in Downloads. Checking Data Lake for {invoice_month}...")
+        expected_in_lake = os.path.join(target_folder, f"invoice-{invoice_month}.csv")
+        return expected_in_lake if os.path.exists(expected_in_lake) else None
 
-    # Path to the Text Editor app in Pop OS
-    text_editor_path = "/usr/bin/gedit"
+    with zipfile.ZipFile(ZIP_PATH, 'r') as z:
+        csv_name = z.namelist()[0]
+        z.extract(csv_name, "/tmp", pwd=bytes(ZIP_PASSWORD, 'utf-8'))
+    
+    new_csv_name = f"invoice-{invoice_month}.csv"
+    final_path = os.path.join(target_folder, new_csv_name)
+    shutil.move(f"/tmp/{csv_name}", final_path)
+    print(f"✅ Archived: {new_csv_name}")
+    return final_path
 
-source_directory = "/home/ricardo/Downloads"
+def process_credit_card(csv_path):
+    df = pd.read_csv(csv_path, delimiter=';')
+    df = df[df['Descrição'] != 'Inclusao de Pagamento    '].copy()
+    df.columns = df.columns.str.strip()
 
-#! rename this variable to save the file according to the invoice month
-month = "2025-07"
+    mapping_query = "SELECT original_description, mapped_category, mapped_subcategory FROM dim_merchant_mapping"
+    df_map = pd.read_sql(mapping_query, engine)
+    
+    df = df.merge(df_map, left_on='Descrição', right_on='original_description', how='left')
+    df['final_category'] = df['mapped_category'].combine_first(df['Categoria'])
+    
+    df_final = pd.DataFrame({
+        'transaction_date': pd.to_datetime(df['Data de Compra'], dayfirst=True),
+        'description': df['Descrição'],
+        'category': df['final_category'],
+        'subcategory': df['mapped_subcategory'],
+        'amount_brl': df['Valor (em R$)'],
+        'card_holder_name': df['Nome no Cartão'],
+        'installment_info': df['Parcela'],
+        'transaction_type': 'credit_card',
+        'status': 'Liquidado',
+        'source_file': os.path.basename(csv_path)
+    })
+    return df_final
 
+def process_manual_bills():
+    if not os.path.exists(CONTROLE_XLSX):
+        return pd.DataFrame()
 
-# Rename it as needed
-file = (f"invoice-{month}")
+    try:
+        xl = pd.ExcelFile(CONTROLE_XLSX)
+        # Search for sheet regardless of "Pagar" or "pagar"
+        target_sheet = next((s for s in xl.sheet_names if s.lower() == 'contas a pagar'), None)
+        
+        if not target_sheet:
+            print(f"⚠️ Sheet 'Contas a Pagar' not found. Available: {xl.sheet_names}")
+            return pd.DataFrame()
 
-target_extension = ".csv"
+        df_manual = pd.read_excel(xl, sheet_name=target_sheet)
+        
+        # --- HYBRID CLEANING LOGIC ---
+        # 1. Drop rows that are completely empty
+        df_manual = df_manual.dropna(how='all')
+        
+        # 2. Convert 'Quanto' to numeric (handling '-' and 'R$')
+        df_manual['amount'] = (
+            df_manual['Quanto']
+            .astype(str)
+            .replace(r'[R\$\s.]', '', regex=True)
+            .replace(',', '.', regex=True)
+        )
+        df_manual['amount'] = pd.to_numeric(df_manual['amount'], errors='coerce').fillna(0.0)
+        
+        # 3. Impute missing descriptions to satisfy Postgres NOT NULL
+        df_manual['Descrição'] = df_manual['Descrição'].fillna('MISSING_DESCRIPTION')
 
-destination_directory = "/home/ricardo/study/statistic/src"
+        df_final = pd.DataFrame({
+            'transaction_date': pd.to_datetime(df_manual['Dia']),
+            'description': df_manual['Descrição'],
+            'category': 'Manual Expense',
+            'subcategory': None,
+            'amount_brl': df_manual['amount'],
+            'card_holder_name': None,
+            'installment_info': 'Única',
+            'transaction_type': 'manual_bill',
+            'status': df_manual['Status'],
+            'source_file': 'Controle.xlsx'
+        })
+        
+        # Keep only rows that have an actual financial impact
+        return df_final[df_final['amount_brl'] > 0]
+        
+    except Exception as e:
+        print(f"⚠️ Could not process manual bills: {e}")
+        return pd.DataFrame()
 
-destination_file_path = None  # Initialize the variable outside the loop
+def run_pipeline(month):
+    print(f"🚀 Starting Pipeline for {month}...")
+    csv_path = ingest_and_archive(month)
+    
+    all_data = []
+    
+    # 1. CREDIT CARD: Only delete/replace if we actually have a file to upload
+    if csv_path and os.path.exists(csv_path):
+        df_cc = process_credit_card(csv_path)
+        if not df_cc.empty:
+            with engine.begin() as conn:
+                # Erase old data for THIS month only
+                conn.execute(text("DELETE FROM fact_transactions WHERE source_file = :file"), 
+                             {"file": f"invoice-{month}.csv"})
+            all_data.append(df_cc)
+    else:
+        print(f"ℹ️ No new CC file found. Keeping existing data for {month}.")
 
-for root, dirs, files in os.walk(source_directory):
-    for current_file in files:  # Use a different variable name for the loop
-        if current_file.endswith(target_extension):
-            source_file_path = os.path.join(root, current_file)
-            destination_file_name = (f'invoice-{month}.csv')
-            destination_file_path = os.path.join(
-                destination_directory, destination_file_name)
-            shutil.move(source_file_path, destination_file_path)
-            break
+    # 2. MANUAL BILLS: Always replace with the current state of Excel
+    df_manual = process_manual_bills()
+    if not df_manual.empty:
+        # Check if Coffee is being filtered
+        if 'Coffee' in df_manual['description'].values or 'Coffee' in df_manual['description'].str.lower().values:
+            print("☕ SUCCESS: Coffee found in the data pipeline!")
+        
+        with engine.begin() as conn:
+            # Erase ALL manual bills to prevent duplicates
+            conn.execute(text("DELETE FROM fact_transactions WHERE transaction_type = 'manual_bill'"))
+        all_data.append(df_manual)
 
-if destination_file_path:
-    df = pd.read_csv(destination_file_path, delimiter=';')
+    # 3. UPLOAD
+    if all_data:
+        final_df = pd.concat(all_data, ignore_index=True)
+        final_df.to_sql('fact_transactions', engine, if_exists='append', index=False)
+        print(f"✨ Done! Sync complete.")
 
-    data = df.to_dict(orient='records')
-
-# Read the CSV file with the specified delimiter
-df = pd.read_csv('invoice.csv', delimiter=';')
-
-# Print column names and first few rows for debugging
-print("Column Names:", df.columns)
-print("First Few Rows:\n", df.head())
-
-# Exclude rows with "Inclusao de Pagamento" in the "Descrição" column
-df = df[df['Descrição'] != 'Inclusao de Pagamento    ']
-
-# Get the mapping straight from the DB from Docker
-engine = create_engine('postgresql://ricardo:3136@localhost:5432/statistic_db')
-query = "SELECT original_description, normalized_category FROM dim_merchant_mapping"
-description_mapping = pd.read_sql(query, engine).set_index('original_description')['normalized_category'].to_dict()
-
-# Convert the list of dictionaries to a dictionary
-description_mapping = {item['original']: item['new']
-                       for item in description_list}
-
-# Create a new column "Mapped_Categoria" based on the mapping
-df['Mapped_Categoria'] = df['Descrição'].map(description_mapping)
-
-# Use the original "Categoria" if there is no mapping, otherwise use the mapped value
-df['Categoria'] = df['Mapped_Categoria'].combine_first(df['Categoria'])
-
-# Drop the temporary "Mapped_Categoria" column
-df = df.drop(columns=['Mapped_Categoria'])
-
-# Remove leading and trailing whitespaces from column names
-df.columns = df.columns.str.strip()
-
-# Print column names and first few rows for debugging
-print("Column Names after processing:\n", df.columns)
-print("First Few Rows after processing:\n", df.head())
-
-# Group by "Categoria" and calculate the sum of "Valor (em R$)"
-try:
-    category_sum = df.groupby('Categoria')['Valor (em R$)'].sum().reset_index()
-except KeyError as e:
-    print(
-        f"KeyError: {e}. Check if the column 'Valor (em R$)' is present in the DataFrame.")
-    # Add additional debugging information if needed
-
-# Group by "Nome no Cartão" and calculate the sum of "Valor (em R$)"
-try:
-    user_sum = df.groupby('Nome no Cartão')[
-        'Valor (em R$)'].sum().reset_index()
-    # Calculate the total amount of expenses
-    total_expenses = user_sum['Valor (em R$)'].sum()
-except KeyError as e:
-    print(
-        f"KeyError: {e}. Check if the column 'Valor (em R$)' is present in the DataFrame.")
-
-# Save both DataFrames to a single sheet in a new Excel file, with the summary table on the right of the original data
-with pd.ExcelWriter(f'/home/ricardo/study/statistic/src/credit_card/xlsx/{month}.xlsx', engine='openpyxl') as writer:
-    df.to_excel(writer, sheet_name='Data', index=False, startrow=0, startcol=0)
-    category_sum.to_excel(writer, sheet_name='Data', index=False,
-                          startrow=0, startcol=df.shape[1] + 1, header=True)
-    user_sum.to_excel(writer, sheet_name='Data', index=False,
-                      startrow=0, startcol=df.shape[1] + 3, header=True)
-
-    # Create a DataFrame for total expenses
-    total_expenses_df = pd.DataFrame(
-        {'Nome no Cartão': ['Total Expenses'], 'Valor (em R$)': [total_expenses]})
-    # Append the total expenses to the Excel file
-    total_expenses_df.to_excel(writer, sheet_name='Data', index=False,
-                               startrow=user_sum.shape[0] + 2, startcol=df.shape[1] + 3, header=True)
-
-df = pd.read_csv(f'invoice-{month}.csv', delimiter=';')
-
-data = df.to_dict(orient='records')
-
-with open(f'/home/ricardo/study/statistic/src/credit_card/json/{month}.json', 'w', encoding='utf-8') as json_file:
-    json.dump(data, json_file, indent=4, ensure_ascii=False)
-
-print("Conversion complete. Data saved on 'output.json'.")
-
-print(f'Conversion complete, Data and Summary saved in {month}.xlsx.')
-
-
-# Save it as new tab on Controle
-
-file_name = month
-
-# Especificação dos arquivos de origem e destino
-source_file_path = f'/home/ricardo/study/statistic/src/credit_card/xlsx/{file_name}.xlsx'
-target_file_path = '/home/ricardo/study/statistic/src/Controle.xlsx'
-
-# Nome da aba de origem e nome da nova aba de destino
-source_sheet_name = 'Data'
-new_target_sheet_name = f'{file_name}'  # Change the sheet name to 'Controle2'
-
-# Carrega a aba de origem usando openpyxl
-source_workbook = openpyxl.load_workbook(source_file_path, data_only=True)
-source_sheet = source_workbook[source_sheet_name]
-
-# Carrega a planilha de destino (ou cria uma nova se não existir)
-if os.path.exists(target_file_path):
-    target_workbook = openpyxl.load_workbook(target_file_path)
-else:
-    target_workbook = openpyxl.Workbook()
-
-# Create a new sheet named 'Controle2' or get it if it already exists
-if new_target_sheet_name in target_workbook.sheetnames:
-    target_sheet = target_workbook[new_target_sheet_name]
-else:
-    target_sheet = target_workbook.create_sheet(title=new_target_sheet_name)
-
-# Copia os dados da aba de origem para a aba de destino
-for row in source_sheet.iter_rows(values_only=True):
-    target_sheet.append(row)
-
-# Salva a planilha de destino
-target_workbook.save(target_file_path)
-
-# Faz o upload da planilha para o Google Drive
-
-SCOPES = ['https://www.googleapis.com/auth/drive']
-SERVICE_ACCOUNT_FILE = 'service.account.json'
-PARENT_FOLDER_ID = config('PARENT_FOLDER_ID_DB')
-
-
-def authenticate():
-    creds = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    return creds
-
-
-def upload_file(file_path):
-    creds = authenticate()
-    service = build('drive', 'v3', credentials=creds)
-
-    file_metadata = {
-        'name': f'Controle_{month}.xlsx',
-        # 'name': f'Controle.xlsx',
-        'parents': [PARENT_FOLDER_ID]
-    }
-
-    media_body = MediaFileUpload(file_path, resumable=True)
-
-    file = service.files().create(
-        body=file_metadata,
-        media_body=media_body
-    ).execute()
-
-
-# Upload the target file to Google Drive
-upload_file(target_file_path)
+if __name__ == "__main__":
+    run_pipeline(CURRENT_MONTH)
