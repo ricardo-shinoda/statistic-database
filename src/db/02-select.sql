@@ -27,3 +27,28 @@ ORDER BY updated_at DESC;
 SELECT * FROM fact_transactions 
 WHERE description ILIKE '%Coffee%' 
    OR description ILIKE '%Café%';
+
+SELECT 
+    ticker, 
+    asset_type, 
+    SUM(total_amount) as total_investido,
+    COUNT(*) as qtd_movimentacoes
+FROM fact_investments
+GROUP BY ticker, asset_type
+ORDER BY asset_type DESC, total_investido DESC;
+
+SELECT 
+    owner,
+    ticker, 
+    asset_type, 
+    transaction_type,
+    total_amount,
+    transaction_date
+FROM fact_investments 
+ORDER BY transaction_date DESC 
+LIMIT 20;
+
+select * From fact_investments
+where ticker = 'BITCOIN';
+
+select * from fact_investments;

@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, text
 from decouple import config
 
 # --- 1. SET THE MONTH HERE ---
-CURRENT_MONTH = "2019-12" 
+CURRENT_MONTH = "2021-06" 
 
 # --- 2. CONFIGURATION & PATHS ---
 DB_URL = 'postgresql://ricardo:3136@localhost:5432/statistic_db'
