@@ -51,4 +51,18 @@ LIMIT 20;
 select * From fact_investments
 where ticker = 'BITCOIN';
 
-select * from fact_investments;
+select * from fact_investments
+where transaction_type = 'venda';
+
+select * from fact_market_items;
+
+SELECT 
+    p.category, 
+    SUM(f.total_price_final) as gasto_total
+FROM fact_market_items f
+JOIN dim_product p ON f.product_code = p.product_code
+GROUP BY p.category
+ORDER BY gasto_total DESC;
+
+select * from dim_market;
+SELECT * FROM fact_investments;
