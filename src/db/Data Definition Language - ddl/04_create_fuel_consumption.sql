@@ -28,4 +28,6 @@ CREATE TABLE fact_vehicle_fueling (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+DROP TABLE fact_vehicle_fueling;
+
 ALTER TABLE fact_vehicle_fueling ALTER COLUMN volume_liters DROP NOT NULL;
