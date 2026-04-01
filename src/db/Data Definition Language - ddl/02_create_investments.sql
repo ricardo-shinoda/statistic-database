@@ -6,6 +6,7 @@ CREATE TABLE fact_investments (
     transaction_type TEXT, -- Substituiu 'order'
     transaction_date DATE,
     ticker TEXT,
+    organization TEXT,
     asset_type TEXT, 
     quantity NUMERIC,
     unit_price NUMERIC,
