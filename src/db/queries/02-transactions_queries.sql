@@ -66,3 +66,5 @@ ORDER BY gasto_total DESC;
 
 select * from dim_market;
 SELECT * FROM fact_investments;
+
+select * From fact_vehicle_fueling;
