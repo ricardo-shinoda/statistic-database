@@ -57,37 +57,36 @@ def load_mapping_lookup():
 # --- CORE DE PROCESSAMENTO ---
 
 def process_credit_card(path):
-    if not path or not os.path.exists(path): 
-        print(f"❌ Arquivo não encontrado: {path}")
-        return pd.DataFrame()
+    # ... (verificações de path e extensões iguais)
     
-    file_name = os.path.basename(path)
-    ext = pathlib.Path(path).suffix.lower()
-
-    # 1. Leitura Robusta
+    # 1. Leitura com fallback de Encoding (Resolve os caracteres estranhos de 2019)
     try:
         if ext == '.csv':
-            # Tenta ler com sep ';' e fallback para erro de encoding
-            df = pd.read_csv(path, sep=';', encoding='utf-8', on_bad_lines='skip')
+            try:
+                df = pd.read_csv(path, sep=';', encoding='utf-8')
+            except UnicodeDecodeError:
+                df = pd.read_csv(path, sep=';', encoding='latin1')
         else:
             df = pd.read_excel(path)
     except Exception as e:
-        print(f"⚠️ Erro ao ler arquivo {file_name}: {e}")
+        print(f"⚠️ Erro crítico na leitura: {e}")
         return pd.DataFrame()
 
-    # 2. Verificação de Arquivo Vazio (O que causou seu erro anterior)
-    if df.empty:
-        print(f"⚪ Arquivo {file_name} está vazio. Pulando...")
-        return pd.DataFrame()
+    # 2. Normalização de nomes de colunas (Remove acentos e caracteres especiais)
+    # Isso transforma 'DescriÃ§Ã£o' em 'Descricao' e 'CartÃ£o' em 'Cartao'
+    df.columns = [c.encode('ascii', 'ignore').decode('ascii').strip() if isinstance(c, str) else c for c in df.columns]
 
-    # 3. Mapeamento de Colunas
-    lookup = load_mapping_lookup()
+    # 3. Mapeamento Flexível
+    # Agora o mapping usa nomes "limpos", sem se preocupar com o lixo do encoding
     mapping = {
         'Data de Compra': 'transaction_date',
-        'Descrição': 'description',
+        'Data': 'transaction_date',
+        'Descricao': 'description',
+        'Descrio': 'description',          # Caso o 'c' tenha sumido
         'Valor (em R$)': 'amount_brl',
+        'Valor': 'amount_brl',
         'Categoria': 'raw_category',
-        'Nome no Cartão': 'card_holder_name'
+        'Nome no Cartao': 'card_holder_name'
     }
     df = df.rename(columns=mapping)
 
