@@ -65,9 +65,10 @@ GROUP BY p.category
 ORDER BY gasto_total DESC;
 
 select * from dim_market;
-SELECT * FROM fact_investments limit 20;
+SELECT * FROM fact_investments;
 select * from fact_transactions
 where transaction_type = 'manual_bill';
 select * From fact_vehicle_fueling;
 
-SELECT * FROM fact_transactions limit 20;
+SELECT * FROM fact_transactions where transaction_date = '2019-08-17';
+select count(transaction_date) From fact_transactions;
