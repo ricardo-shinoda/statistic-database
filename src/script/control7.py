@@ -57,9 +57,15 @@ def load_mapping_lookup():
 # --- CORE DE PROCESSAMENTO ---
 
 def process_credit_card(path):
-    # ... (verificações de path e extensões iguais)
+    if not path or not os.path.exists(path): 
+        print(f"❌ Arquivo não encontrado: {path}")
+        return pd.DataFrame()
     
-    # 1. Leitura com fallback de Encoding (Resolve os caracteres estranhos de 2019)
+    file_name = os.path.basename(path)
+    # --- CORREÇÃO DO ERRO 'ext' ---
+    ext = pathlib.Path(path).suffix.lower()
+
+    # 1. Leitura com Robusteza de Encoding (Resgatando 2019)
     try:
         if ext == '.csv':
             try:
@@ -69,20 +75,24 @@ def process_credit_card(path):
         else:
             df = pd.read_excel(path)
     except Exception as e:
-        print(f"⚠️ Erro crítico na leitura: {e}")
+        print(f"⚠️ Erro crítico na leitura de {file_name}: {e}")
         return pd.DataFrame()
 
-    # 2. Normalização de nomes de colunas (Remove acentos e caracteres especiais)
-    # Isso transforma 'DescriÃ§Ã£o' em 'Descricao' e 'CartÃ£o' em 'Cartao'
-    df.columns = [c.encode('ascii', 'ignore').decode('ascii').strip() if isinstance(c, str) else c for c in df.columns]
+    if df.empty:
+        return pd.DataFrame()
+
+    # 2. Normalização de Colunas (Remove o lixo de encoding 'Ã§Ã£')
+    df.columns = [
+        c.encode('ascii', 'ignore').decode('ascii').strip() 
+        if isinstance(c, str) else c for c in df.columns
+    ]
 
     # 3. Mapeamento Flexível
-    # Agora o mapping usa nomes "limpos", sem se preocupar com o lixo do encoding
     mapping = {
         'Data de Compra': 'transaction_date',
         'Data': 'transaction_date',
-        'Descricao': 'description',
-        'Descrio': 'description',          # Caso o 'c' tenha sumido
+        'Descricao': 'description', # Nome limpo pós-ascii
+        'Descrio': 'description',
         'Valor (em R$)': 'amount_brl',
         'Valor': 'amount_brl',
         'Categoria': 'raw_category',
@@ -90,24 +100,56 @@ def process_credit_card(path):
     }
     df = df.rename(columns=mapping)
 
-    # 4. Função Interna de Enriquecimento "Blindada"
+    # 4. Enriquecimento de Categorias (Lógica que você quer melhorar)
+    lookup = load_mapping_lookup()
+
     def enrich(row):
-        # Normalização da descrição
         desc_raw = row.get('description', '')
+        # Limpamos espaços e deixamos em maiúsculo para o match ser exato
         desc = str(desc_raw).strip().upper() if pd.notna(desc_raw) else ""
         
-        # Se for linha vazia ou sem descrição
         if not desc or desc in ['NAN', 'NONE', '']:
-            return "Outros", "Aguardando Classificação"
+            return "Outros", "Aguardando Classificacao"
 
-        # Tenta o Match no seu JSON
+        # Tenta o Match exato no seu description.json
         if desc in lookup:
             return lookup[desc][0], lookup[desc][1]
         
-        # Fallback: Mantém a categoria original se existir, senão 'Outros'
+        # Se não achar no JSON, tenta usar a categoria que veio do Banco/Excel
         cat_orig = row.get('raw_category', 'Outros')
-        cat_orig = str(cat_orig) if pd.notna(cat_orig) else "Outros"
-        return cat_orig, "Aguardando Classificação"
+        cat_orig = str(cat_orig).strip() if pd.notna(cat_orig) else "Outros"
+        
+        return cat_orig, "Revisar Subcategoria"
+
+    # Aplicando a classificação
+    results = df.apply(enrich, axis=1)
+    df['category'] = [res[0] for res in results]
+    df['subcategory'] = [res[1] for res in results]
+
+    # 5. Limpeza de Valores e Datas
+    df['amount_brl'] = pd.to_numeric(clean_currency(df['amount_brl']), errors='coerce').fillna(0)
+    
+    # Tratamento de data (Mixed para lidar com 2019 e 2026 no mesmo pipeline)
+    df['transaction_date'] = pd.to_datetime(df['transaction_date'], errors='coerce', dayfirst=True)
+    
+    # Se a data falhou (ex: parcelas 9/10), usamos a data do arquivo
+    if df['transaction_date'].isna().any():
+        try:
+            parts = file_name.replace('invoice-', '').split('-')
+            fallback = pd.to_datetime(f"{parts[0]}-{parts[1]}-01")
+            df['transaction_date'] = df['transaction_date'].fillna(fallback)
+        except:
+            pass
+
+    df['source_file'] = file_name
+    df['transaction_type'] = 'credit_card'
+    
+    target_columns = [
+        'transaction_date', 'description', 'category', 'subcategory', 
+        'amount_brl', 'card_holder_name', 'source_file', 'transaction_type'
+    ]
+    
+    return df[[c for c in target_columns if c in df.columns]]
 
     # 5. Aplicação Segura (Evita o erro de length de colunas)
     enriched_results = df.apply(enrich, axis=1)

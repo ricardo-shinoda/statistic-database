@@ -67,8 +67,11 @@ ORDER BY gasto_total DESC;
 select * from dim_market;
 SELECT * FROM fact_investments;
 select * from fact_transactions
-where transaction_type = 'manual_bill';
+where transaction_type <> 'manual_bill'
+ORDER BY category;
 select * From fact_vehicle_fueling;
 
-SELECT * FROM fact_transactions where transaction_date = '2019-08-17';
+SELECT * FROM fact_transactions;
 select count(transaction_date) From fact_transactions;
+select distinct description from fact_transactions
+where category = 'Empresa para empresa';
