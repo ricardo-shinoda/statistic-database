@@ -1,32 +1,14 @@
-DROP TABLE IF EXISTS fact_market_items;
-
--- 1. Tabela de Mercados (Dimensão)
-CREATE TABLE dim_market (
+CREATE TABLE compras (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    location TEXT,
-    city TEXT DEFAULT 'Bauru'
+    data_compra TIMESTAMP,
+    estabelecimento TEXT,
+    tipo_estabelecimento TEXT, -- 'Mercado' ou 'Restaurante'
+    produto_codigo TEXT,
+    descricao TEXT,
+    categoria TEXT,
+    quantidade NUMERIC(10,3),
+    unidade TEXT,
+    preco_unitario_bruto NUMERIC(10,2),
+    desconto_item NUMERIC(10,2) DEFAULT 0,
+    valor_total_final NUMERIC(10,2)
 );
-
--- 2. Tabela de Produtos (Dimensão)
--- O product_code (EAN) é a nossa chave natural aqui
-CREATE TABLE dim_product (
-    product_code TEXT PRIMARY KEY,
-    description TEXT,
-    category TEXT,
-    subcategory TEXT
-);
-
--- 3. Tabela de Itens (Fato)
-CREATE TABLE fact_market_items (
-    id SERIAL PRIMARY KEY,
-    transaction_date TIMESTAMP,
-    market_id INTEGER REFERENCES dim_market(id),
-    product_code TEXT REFERENCES dim_product(product_code),
-    quantity NUMERIC(10,3),
-    unit_measure TEXT,
-    unit_price_raw NUMERIC(10,2),
-    discount_item NUMERIC(10,2) DEFAULT 0,
-    total_price_final NUMERIC(10,2)
-);
-
