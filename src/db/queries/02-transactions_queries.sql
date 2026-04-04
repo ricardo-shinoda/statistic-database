@@ -71,7 +71,14 @@ where transaction_type <> 'manual_bill'
 ORDER BY category;
 select * From fact_vehicle_fueling;
 
-SELECT * FROM fact_transactions;
 select count(transaction_date) From fact_transactions;
+SELECT * FROM fact_transactions;
 select distinct description from fact_transactions
 where category = 'Empresa para empresa';
+
+select * from fact_transactions
+where installment <> NULL;
+
+select * from stg_credit_card;
+select * from pagamento_cartao;
+select * from pagamento_dinheiro;
