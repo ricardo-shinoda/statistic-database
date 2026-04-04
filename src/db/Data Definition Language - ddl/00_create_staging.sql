@@ -74,3 +74,31 @@ CREATE TABLE pagamento_cartao (
     arquivo_origem TEXT,    -- Ex: 'invoice-2026-04.csv'
     data_ingestao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Drop existing table and recreate with all columns including comentario
+DROP TABLE IF EXISTS pagamento_dinheiro CASCADE;
+
+-- Drop existing table if it exists
+DROP TABLE IF EXISTS pagamento_dinheiro CASCADE;
+
+-- Create table with specified column order
+CREATE TABLE pagamento_dinheiro (
+    id SERIAL PRIMARY KEY,
+    data_compra DATE,
+    descricao VARCHAR(255),
+    valor DECIMAL(10,2),
+    status_pagamento VARCHAR(50),
+    parcela VARCHAR(20),
+    comentario TEXT,
+    categoria VARCHAR(100),
+    subcategoria VARCHAR(100),
+    metodo_pagamento VARCHAR(50),
+    arquivo_origem VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes for better query performance
+CREATE INDEX idx_pagamento_dinheiro_data_compra ON pagamento_dinheiro(data_compra);
+CREATE INDEX idx_pagamento_dinheiro_categoria ON pagamento_dinheiro(categoria);
+CREATE INDEX idx_pagamento_dinheiro_subcategoria ON pagamento_dinheiro(subcategoria);
+CREATE INDEX idx_pagamento_dinheiro_comentario ON pagamento_dinheiro(comentario);
