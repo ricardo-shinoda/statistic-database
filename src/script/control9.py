@@ -77,12 +77,13 @@ def process_pagamento_dinheiro():
     stg_df = pd.DataFrame({
         'data_compra': pd.to_datetime(df.iloc[:, 0], dayfirst=True, errors='coerce'),
         'descricao': df.iloc[:, 2],
-        'valor': clean_currency(df.iloc[:, 3]), # Limpeza corrigida aqui também
+        'valor': clean_currency(df.iloc[:, 3]),
         'status_pagamento': df.iloc[:, 4],
         'parcela': df.iloc[:, 5].astype(str).fillna('1-1'),
-        'categoria': df.iloc[:, 6],
+        'comentario': df.iloc[:, 6],  # Mudado: agora recebe o que era categoria (coluna 6)
+        'categoria': None,  # Vazio por enquanto
+        'subcategoria': None,  # Vazio por enquanto
         'metodo_pagamento': df.iloc[:, 8] if df.shape[1] > 8 else None,
-        'comentario': df.iloc[:, 7] if df.shape[1] > 7 else None,
         'arquivo_origem': 'Controle.xlsx'
     })
     

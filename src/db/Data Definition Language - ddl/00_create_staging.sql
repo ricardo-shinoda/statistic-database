@@ -43,3 +43,34 @@ CREATE TABLE fact_transactions (
     arquivo_origem TEXT,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+-- nova estrutura a partir daqui
+
+CREATE TABLE pagamento_dinheiro (
+    id SERIAL PRIMARY KEY,
+    data_compra DATE NOT NULL,
+    descricao TEXT NOT NULL,
+    valor NUMERIC(15,2) NOT NULL,
+    status_pagamento TEXT,  -- 'paid', 'pending', etc.
+    parcela TEXT,           -- Ex: '1-4', '1-1'
+    metodo_pagamento TEXT,  -- 'Cheque', 'Pix', 'Dinheiro'
+    categoria TEXT,         -- Sugestão: Para facilitar o JOIN futuro
+    comentario TEXT,
+    arquivo_origem TEXT,    -- Para auditoria (Controle.xlsx)
+    data_ingestao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE pagamento_cartao (
+    id SERIAL PRIMARY KEY,
+    data_compra DATE NOT NULL,
+    cartao_titular TEXT,    -- 'RICARDO SHINODA'
+    cartao_final TEXT,      -- Ex: '5439'
+    categoria TEXT,         -- 'Supermercados', 'Transporte', etc.
+    descricao TEXT,         -- 'DescriÃ§Ã£o' corrigida
+    parcela TEXT,           -- '3/3' ou 'Ãšnica' (corrigir para 'Única')
+    valor_usd NUMERIC(15,2),
+    valor_brl NUMERIC(15,2) NOT NULL, -- 'Valor (em R$)'
+    arquivo_origem TEXT,    -- Ex: 'invoice-2026-04.csv'
+    data_ingestao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
