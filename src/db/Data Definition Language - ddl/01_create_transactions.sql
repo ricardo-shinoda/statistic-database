@@ -42,3 +42,5 @@ CREATE TABLE fact_transactions (
     ingestion_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE fact_transactions ADD COLUMN IF NOT EXISTS source_type TEXT;
+
