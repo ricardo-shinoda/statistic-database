@@ -82,3 +82,81 @@ where installment <> NULL;
 select * from stg_credit_card;
 select * from pagamento_cartao;
 select * from pagamento_dinheiro;
+
+SELECT
+    DISTINCT descricao,
+    categoria
+FROM pagamento_cartao;
+
+
+
+
+WITH combined_expenses AS (
+    -- Data from the credit card table
+    SELECT 
+        DATE_TRUNC('month', data_compra) AS mes,
+        COALESCE(valor_brl, 0) AS valor_total
+    FROM pagamento_cartao
+    
+    UNION ALL
+    
+    -- Data from the second table (pagamento_dinheiro)
+    SELECT 
+        DATE_TRUNC('month', data_compra) AS mes,
+        COALESCE(valor, 0) AS valor_total
+    FROM pagamento_dinheiro
+    WHERE descricao NOT LIKE '%C6%'
+        AND descricao NOT LIKE '%C6%'
+)
+SELECT 
+    TO_CHAR(mes, 'YYYY-MM') AS periodo,
+    SUM(valor_total) AS total_gasto
+FROM combined_expenses
+GROUP BY mes
+ORDER BY mes DESC;
+
+SELECT 
+        DATE_TRUNC('month', data_compra) AS mes,
+        SUM(valor_brl) AS valor_total
+    FROM pagamento_cartao
+GROUP BY mes, sum(valor_brl)
+ORDER BY mes DESC;
+
+SELECT 
+    TO_CHAR(DATE_TRUNC('month', data_compra), 'YYYY-MM') AS periodo,
+    SUM(valor_brl) AS total_cartao,
+    COUNT(*) AS num_transacoes
+FROM pagamento_cartao
+WHERE data_compra >= '2026-01-01'
+GROUP BY 1
+ORDER BY 1 DESC;
+
+
+WITH combined_expenses AS (
+    -- 1. Credit Card: Individual purchases
+    SELECT 
+        DATE_TRUNC('month', data_compra) AS mes,
+        COALESCE(valor_brl, 0) AS valor_total
+    FROM pagamento_cartao
+    
+    UNION ALL
+    
+    -- 2. Cash/Debit: Purchases ONLY (Excluding Invoice Payments and C6)
+    SELECT 
+        DATE_TRUNC('month', data_compra) AS mes,
+        COALESCE(valor, 0) AS valor_total
+    FROM pagamento_dinheiro
+    WHERE 
+        -- Exclude C6
+        (metodo_pagamento NOT ILIKE '%C6%' OR metodo_pagamento IS NULL)
+        -- Exclude Invoice Payments (Adjust these keywords to match your bank's description)
+        AND descricao NOT ILIKE '%pagamento%efetuado%'
+        AND descricao NOT ILIKE '%fatura%cartao%'
+        AND descricao NOT ILIKE '%nubank%' -- common if paying from another account
+)
+SELECT 
+    TO_CHAR(mes, 'YYYY-MM') AS periodo,
+    SUM(valor_total) AS total_gasto
+FROM combined_expenses
+GROUP BY mes
+ORDER BY mes DESC;
