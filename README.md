@@ -1,4 +1,4 @@
-# To start working:
+No Terminal do Linux: Use Ctrl + Shift + V.# To start working:
 ### 1. source vevn/bin/activate -- to activate venv
 ### 2. docker start statistic -- to start docker
 ### 3. Connect to the DB SQLTool -- to connect to the DB
@@ -34,3 +34,4 @@ control7.py = Agilidade e Atualização. (Garante que o presente está em dia).
 Dica técnica: Como o seu control7.py é o "motor" que o maintenance.py usa, qualquer melhoria que você fizer na lógica de limpeza de texto ou conversão de moeda no control7 será herdada automaticamente pelo maintenance.
 
 Você agora tem um Pipeline de Engenharia de Dados profissional, Ricardo. Parabéns pela persistência em resolver os erros de schema e de null violation! 🚀
+No Terminal do Linux: Use Ctrl + Shift + V.

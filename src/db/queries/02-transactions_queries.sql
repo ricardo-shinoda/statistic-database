@@ -88,7 +88,7 @@ SELECT
     categoria
 FROM pagamento_cartao;
 
-
+select * from postgres_raw.nissan_kicks_consumption;
 
 
 WITH combined_expenses AS (
@@ -160,3 +160,43 @@ SELECT
 FROM combined_expenses
 GROUP BY mes
 ORDER BY mes DESC;
+
+select * from pagamento_cartao;
+
+-- to get the monthly expend by card
+WITH devided_car AS (
+    SELECT
+        -- DATE_TRUNC('month', data_compra) as mes,
+        data_compra,
+        COALESCE(valor_brl, 0) as valor,
+        cartao_titular,
+        cartao_final,
+        parcela
+    from pagamento_cartao
+    where 
+        cartao_final ILIKE '7757'
+        -- AND data_compra = '2026-03-01' AND data_compra = '2026-03-30'
+)
+
+select
+    -- TO_CHAR(mes, 'YYYY-MM') as mes,
+    data_compra,
+    sum(valor) as valor_total,
+    cartao_final,
+    parcela
+from devided_car
+group by data_compra, cartao_final, parcela
+order by data_compra;
+
+
+select * from analytics.fact_pagamentos_unificados limit 10;
+
+select * from analytics.fact_unified_payments;
+
+select * from analytics.category_mapping limit 10;
+
+SELECT * FROM analytics.payments LIMIT 100;
+
+
+
+
