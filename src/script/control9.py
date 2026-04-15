@@ -57,7 +57,7 @@ def process_pagamento_cartao():
                         df[col] = clean_currency(df[col])
 
                 # Sobe para o schema postgres_raw
-                df.to_sql('pagamento_cartao', engine, schema='postgres_raw', if_exists='append', index=False)
+                df.to_sql('payment_card', engine, schema='postgres_raw', if_exists='append', index=False)
                 print(f"   ✅ {csv_file.name} inserido.")
         except Exception as e:
             print(f"   ❌ Erro em {csv_file.name}: {e}")
@@ -81,7 +81,7 @@ def process_pagamento_dinheiro():
     df['arquivo_origem'] = 'Controle.xlsx'
     
     # IMPORTANTE: Para o Pix, usamos 'replace' para garantir que a tabela reflita o Excel atual
-    df.to_sql('pagamento_dinheiro', engine, schema='postgres_raw', if_exists='replace', index=False)
+    df.to_sql('payment_pix', engine, schema='postgres_raw', if_exists='replace', index=False)
     print(f"✅ {len(df)} registros de Pix enviados para postgres_raw.")
 
 
