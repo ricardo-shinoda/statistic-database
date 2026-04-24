@@ -84,6 +84,29 @@ def process_pagamento_dinheiro():
     df.to_sql('payment_pix', engine, schema='postgres_raw', if_exists='replace', index=False)
     print(f"✅ {len(df)} registros de Pix enviados para postgres_raw.")
 
+# 5. PROCESS OF INCOME 
+def process_income():
+    path = "/home/ricardo/study/statistic/data/raw/Controle.xlsx"
+    if not os.path.exists(path):
+        print(f"⚠️ File {path} not found.")
+        return
+    
+    # Read the whole tab
+    df = pd.read_excel(path, sheet_name='entrada')
+    df = df.dropna(how='all')
+
+    # Value clean up
+
+    for col in df.columns:
+        if 'value' in col.lower():
+            df[col] = clean_currency(df[col])
+
+    df['arquivo_origem'] = 'Controle.xlsx'
+
+    # Use replace so the table will always show the latest Excel file
+    df.to_sql('income', engine, schema='postgres_raw', if_exists='replace', index=False)
+    print(f"✅ {len(df)} income data registered on postgres_raw.")
+
 
 def process_combustivel():
     path = "/home/ricardo/study/statistic/data/raw/Controle.xlsx"
@@ -116,27 +139,30 @@ def process_investimentos():
 
 # 5. EXECUÇÃO PRINCIPAL
 if __name__ == "__main__":
-    # 1. CRIAÇÃO DO SCHEMA (FORÇADA)
     try:
-        # Usamos connect() em vez de begin() para garantir o commit imediato
         with engine.connect() as conn:
-            print("🏗️ Criando schema 'postgres_raw' caso não exista...")
-            conn.execute(text("CREATE SCHEMA IF NOT EXISTS postgres_raw;"))
-            conn.commit() # Importante para garantir que o schema esteja disponível para os próximos passos
+            print("🏗️ Preparando ambiente...")
+            # O CASCADE remove a tabela E as views do dbt que dependem dela temporariamente
+            conn.execute(text("DROP TABLE IF EXISTS postgres_raw.payment_card CASCADE;"))
+            conn.execute(text("DROP TABLE IF EXISTS postgres_raw.payment_pix CASCADE;"))
+            conn.execute(text("DROP TABLE IF EXISTS postgres_raw.nissan_kicks_consumption CASCADE;"))
+            conn.execute(text("DROP TABLE IF EXISTS postgres_raw.stock_movements CASCADE;"))
+            conn.execute(text("DROP TABLE IF EXISTS postgres_raw.income CASCADE;"))
             
-            print("🧹 Limpando tabela de cartão...")
-            try:
-                conn.execute(text("TRUNCATE TABLE postgres_raw.pagamento_cartao RESTART IDENTITY;"))
-                conn.commit()
-            except Exception:
-                print("ℹ️ Tabela pagamento_cartao ainda não existe. Será criada no upload.")
+            conn.execute(text("CREATE SCHEMA IF NOT EXISTS postgres_raw;"))
+            conn.commit()
+            print("🧹 Tabelas antigas removidas com CASCADE.")
     except Exception as e:
-        print(f"⚠️ Aviso na preparação do banco: {e}")
+        print(f"⚠️ Aviso na preparação: {e}")
 
+    # Agora as cargas vão funcionar porque o caminho está livre
     process_pagamento_dinheiro()
     process_pagamento_cartao()
-    process_combustivel()      # Nova
-    process_investimentos()    # Nova
+    process_combustivel()
+    process_investimentos()
+    process_income()
+
+    print("\n🚀 Carga finalizada!")
 
     print("\n🚀 Carga completa: Finanças, Consumo e Investimentos!")
 
