@@ -11,6 +11,6 @@ from analytics.payments
 group by 1;
 
 drop table analytics.payments cascade;
-drop table postgres_raw.nissan_kick_consumption;
+drop table postgres_raw.pagamento_dinheiro;
 
-select * from postgres_raw.pagamento_cartao;
+select * from postgres_raw.payment_pix;

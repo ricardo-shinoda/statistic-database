@@ -178,6 +178,9 @@ WITH devided_car AS (
         -- AND data_compra = '2026-03-01' AND data_compra = '2026-03-30'
 )
 
+
+
+
 select
     -- TO_CHAR(mes, 'YYYY-MM') as mes,
     data_compra,
@@ -197,6 +200,35 @@ select * from analytics.category_mapping limit 10;
 
 SELECT * FROM analytics.payments LIMIT 100;
 
+select * from postgres_raw.pagamento_dinheiro;
+
+SELECT 
+    category_name, 
+    COUNT(*) as total_transacoes, 
+    SUM(amount_brl) as valor_total
+FROM analytics.fact_unified_payments
+GROUP BY 1
+ORDER BY valor_total DESC;
+
+
+select * from postgres_raw.stock_movements;
+
+select * From postgres_raw.nissan_kicks_consumption;
+
+SELECT 
+    filled_at,
+    odometer,
+    km_driven,
+    liters,
+    km_per_liter,
+    cost_per_km
+FROM analytics.fact_vehicle_consumption
+ORDER BY filled_at DESC;
+
+SELECT schema_name, table_name 
+FROM information_schema.tables 
+WHERE table_name = 'fact_investments';
 
 
 
+drop table analytics.fact_investiments;
