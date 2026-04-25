@@ -1,20 +1,23 @@
 
-# *.xlsx
-# *.csv
-# *.json
-# *.pdf
-# *.jpg
+*.xlsx
+*.csv
+*.json
+*.pdf
+*.jpg
 
 
-# # Ambiente Virtual
-# venv/
-# .env
+# Ambiente Virtual
+venv/
+.env
 
-# # Dados Sensíveis (O mais importante!)
-# data/Controle.xlsx
-# data/*.json
-# data_lake/
+# Dados Sensíveis (O mais importante!)
+data/Controle.xlsx
+data/*.json
+data_lake/
 
-# # Python cache
-# __pycache__/
-# *.py[cod]
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Google keys
+credentials.json
