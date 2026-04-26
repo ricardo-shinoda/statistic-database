@@ -232,3 +232,8 @@ WHERE table_name = 'fact_investments';
 
 
 drop table analytics.fact_investiments;
+
+-- Deleting the Schema postgres_raw to run the new python code from scratch and avoid any duplicated data.
+drop schema if exists postgres_raw cascade;
+-- Recreating the Schema again
+create schema postgres_raw;
