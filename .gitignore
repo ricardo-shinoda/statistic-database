@@ -21,3 +21,7 @@ __pycache__/
 
 # Google keys
 credentials.json
+service.account.json
+
+# Temp files
+Statistic.session.sql
