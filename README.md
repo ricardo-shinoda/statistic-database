@@ -1,37 +1,84 @@
-No Terminal do Linux: Use Ctrl + Shift + V.# To start working:
-### 1. source vevn/bin/activate -- to activate venv
-### 2. docker start statistic -- to start docker
-### 3. Connect to the DB SQLTool -- to connect to the DB
-### 4. If need to monthly add data, month ending run: control7.py
-### 5. If need to delete all the data in the DB and run again: maintenance.py
+# Personal Finance ETL Pipeline: Google Drive to PostgreSQL
 
+A modern data engineering pipeline designed to automate personal finance tracking. This project implements an **ELT (Extract, Load, Transform)** architecture, extracting raw financial data from Google Drive, loading it into a PostgreSQL container, and transforming it into analytical models using dbt.
 
-Aqui está como você deve usar cada um daqui para frente:
+## 🏗 System Architecture
+The pipeline is divided into two main stages:
+1.  **Ingestion Layer (Python):** Handles OAuth2 authentication with Google Drive API, downloads credit card invoices and control spreadsheets, and loads them into the `postgres_raw` schema.
+2.  **Transformation Layer (dbt):** Cleans, tests, and models the raw data into a star schema (`analytics` schema) for financial insights.
 
-1. Quando usar o maintenance.py (O "Botão de Pânico/Reset")
-Use este script sempre que o objetivo for limpar o passado e reescrever a história.
+---
 
-Alteração de Categorias: Se você mudou o seu description.json e quer que as compras de 2022 e 2023 reflitam essas novas categorias.
+## 🚀 Getting Started
 
-Correção de Bug: Se você descobriu um erro na lógica de cálculo e precisa que ele seja aplicado a todos os 60 meses de uma vez.
+### 1. Data Ingestion (Python Repository)
+This repository handles the **Extract & Load** phases. It targets the `postgres_raw` schema and manages database dependencies.
 
-Limpeza de IDs: Se o banco começar a ficar com "buracos" nos IDs ou se você quiser garantir que o Data Lake e o Banco estão 100% idênticos.
+* **Step 1: Activate Virtual Environment**
+    ```bash
+    source venv/bin/activate
+    ```
+* **Step 2: Spin up the Infrastructure**
+    Ensure your PostgreSQL container is running via OrbStack or terminal:
+    ```bash
+    docker-compose up -d
+    ```
+* **Step 3: Database Connection**
+    Verify connection to `statistic_db` via port **5433** (standardized for macOS compatibility).
+* **Step 4: Execute Ingestion**
+    Run the control script to sync Google Drive data with the database:
+    ```bash
+    python3 src/script/control11.py
+    ```
+    *Note: The script is configured to automatically drop the `analytics` schema to handle DDL dependencies.*
 
-2. Quando usar o control7.py (O "Operacional")
-Use este script para o fluxo incremental.
+---
 
-Fechamento do Mês: Você acabou de baixar o ZIP do mês atual (ex: Abril/2026). Basta rodar o control7 no modo current e ele vai processar apenas esse arquivo novo.
+### 2. Data Transformation (dbt Repository)
+This repository handles the **Transform** phase, turning raw data into business-ready tables.
 
-Venda ou Gasto Manual: Se você abriu o Controle.xlsx, adicionou uma linha de uma conta paga ou uma venda, basta rodar o control7. Como ele faz o Delete e Insert das tabelas manuais, ele vai atualizar o banco apenas com as novidades do Excel.
+* **Step 1: Activate Virtual Environment**
+    ```bash
+    source venv/bin/activate
+    ```
+* **Step 2: Initialize Seeds**
+    Load static mapping files (CSV) into the database:
+    ```bash
+    dbt seed
+    ```
+* **Step 3: Run Transformations**
+    Execute the models to build the analytical layers:
+    ```bash
+    dbt run
+    ```
 
-Arquivo Específico: Se você encontrou um Excel antigo perdido e quer subir apenas ele sem resetar o banco todo, use o mode="historical" com o target_file.
+---
 
-💡 Resumo da Estratégia
-maintenance.py = Qualidade e Consistência. (Garante que o passado está perfeito).
+## ✅ Best Practices & Validation
 
-control7.py = Agilidade e Atualização. (Garante que o presente está em dia).
+To ensure data integrity and pipeline health, it is recommended to run the following checks:
 
-Dica técnica: Como o seu control7.py é o "motor" que o maintenance.py usa, qualquer melhoria que você fizer na lógica de limpeza de texto ou conversão de moeda no control7 será herdada automaticamente pelo maintenance.
+1.  **Connection Test:** Before running models, verify the dbt-to-Postgres connection:
+    ```bash
+    dbt debug
+    ```
+2.  **Data Quality Tests:** Validate your data integrity (null checks, unique keys, accepted values) after every run:
+    ```bash
+    dbt test
+    ```
+3.  **Source Freshness:** Check if the Python ingestion successfully updated the raw tables:
+    ```bash
+    dbt source freshness
+    ```
 
-Você agora tem um Pipeline de Engenharia de Dados profissional, Ricardo. Parabéns pela persistência em resolver os erros de schema e de null violation! 🚀
-No Terminal do Linux: Use Ctrl + Shift + V.
+---
+
+## 🛠 Tech Stack
+* **Language:** Python 3.9+ (SQLAlchemy, Pandas)
+* **Database:** PostgreSQL 15 (Docker/OrbStack)
+* **Transformation:** dbt-core (Data Build Tool)
+* **API:** Google Drive API v3
+
+---
+**Author:** Ricardo Shinoda
+**Role:** Data Engineer

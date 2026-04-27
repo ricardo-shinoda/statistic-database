@@ -237,3 +237,16 @@ drop table analytics.fact_investiments;
 drop schema if exists postgres_raw cascade;
 -- Recreating the Schema again
 create schema postgres_raw;
+
+DROP SCHEMA IF EXISTS public CASCADE;
+CREATE SCHEMA public;
+DROP SCHEMA IF EXISTS analytics CASCADE;
+CREATE SCHEMA analytics;
+
+SELECT table_name 
+FROM information_schema.tables 
+WHERE table_schema = 'postgres_raw';
+
+select * from postgres_raw.payment_card;
+
+DROP schema analytics cascade;
