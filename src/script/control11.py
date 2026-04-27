@@ -18,6 +18,18 @@ host, port, db_name = os.getenv('DB_HOST'), os.getenv('DB_PORT'), os.getenv('DB_
 db_url = f'postgresql://{user}:{password}@{host}:{port}/{db_name}'
 engine = create_engine(db_url)
 
+# Prepare the datebase to receive new imputs
+def prepare_database(engine):
+    print("🧹 Limpando schema analytics para evitar conflitos de dependência...")
+    with engine.connect() as conn:
+        # O commit é necessário para comandos DDL em algumas versões
+        conn.execute(text("DROP SCHEMA IF EXISTS analytics CASCADE;"))
+        conn.execute(text("COMMIT;"))
+    print("✅ Schema analytics removido com sucesso.")
+
+# Chame a função antes de começar a ingestão
+prepare_database(engine)
+
 # Credenciais Google Drive
 SERVICE_ACCOUNT_FILE = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 GOOGLE_DRIVE_INVOICE = os.getenv('GOOGLE_DRIVE_INVOICE')
