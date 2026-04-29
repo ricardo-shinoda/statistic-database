@@ -65,28 +65,38 @@ def get_processed_files():
 
 # --- NÚCLEO DE PROCESSAMENTO DRIVE ---
 
-def download_file_to_memory(service, folder_id, file_extension):
-    """Busca um arquivo na pasta e traz para a memória"""
-    query = f"'{folder_id}' in parents and name contains '{file_extension}' and trashed = false"
-    results = service.files().list(q=query, fields="files(id, name)").execute()
-    files = results.get('files', [])
+# def download_file_to_memory(service, folder_id, file_extension):
+#     """Busca um arquivo na pasta e traz para a memória"""
+#     query = f"'{folder_id}' in parents and name contains '{file_extension}' and trashed = false"
+#     results = service.files().list(q=query, fields="files(id, name)").execute()
+#     files = results.get('files', [])
     
-    if not files:
-        return None, None
+#     if not files:
+#         return None, None
 
-    # Pega o primeiro arquivo encontrado (ou o mais recente se precisar de lógica extra)
-    file_id = files[0]['id']
-    file_name = files[0]['name']
+#     # Pega o primeiro arquivo encontrado (ou o mais recente se precisar de lógica extra)
+#     file_id = files[0]['id']
+#     file_name = files[0]['name']
     
+#     request = service.files().get_media(fileId=file_id)
+#     fh = io.BytesIO()
+#     downloader = MediaIoBaseDownload(fh, request)
+#     done = False
+#     while not done:
+#         _, done = downloader.next_chunk()
+    
+#     fh.seek(0)
+#     return fh, file_name
+
+def download_specific_file(service, file_id):
     request = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
     done = False
     while not done:
         _, done = downloader.next_chunk()
-    
     fh.seek(0)
-    return fh, file_name
+    return fh
 
 # --- FUNÇÕES DE CARGA ---
 
@@ -155,20 +165,33 @@ if __name__ == "__main__":
         conn.execute(text("CREATE SCHEMA IF NOT EXISTS postgres_raw;"))
         conn.commit()
 
-    # 2. Processar Faturas (ZIP)
+    # 2. Processar Faturas (ZIPs Múltiplos)
     print("\n📦 Verificando Faturas no Drive...")
-    zip_fh, zip_name = download_file_to_memory(service, GOOGLE_DRIVE_INVOICE, '.zip')
-    if zip_fh:
-        process_faturas_zip(zip_fh)
+    query = f"'{GOOGLE_DRIVE_INVOICE}' in parents and name contains '.zip' and trashed = false"
+    results = service.files().list(q=query, fields="files(id, name)").execute()
+    files = results.get('files', [])
+
+    if files:
+        print(f"🔍 Encontrados {len(files)} arquivos ZIP. Iniciando processamento...")
+        for file in files:
+            print(f"👉 Baixando: {file['name']}")
+            zip_fh = download_specific_file(service, file['id'])
+            process_faturas_zip(zip_fh) # Sua função original já trata o duplicado com 'get_processed_files'
     else:
         print("⚠️ Nenhum arquivo ZIP encontrado na pasta de faturas.")
 
     # 3. Processar Controle (Excel)
     print("\n📊 Verificando Planilha Controle no Drive...")
-    xlsx_fh, xlsx_name = download_file_to_memory(service, GOOGLE_DRIVE_CONTROLE, '.xlsx')
-    if xlsx_fh:
+    # Fazemos uma busca similar à do ZIP, mas focada no .xlsx da planilha de controle
+    query_xlsx = f"'{GOOGLE_DRIVE_CONTROLE}' in parents and name contains '.xlsx' and trashed = false"
+    results_xlsx = service.files().list(q=query_xlsx, fields="files(id, name)").execute()
+    files_xlsx = results_xlsx.get('files', [])
+
+    if files_xlsx:
+        # Pegamos o primeiro (ou único) arquivo de controle encontrado
+        file_xlsx = files_xlsx[0]
+        print(f"👉 Baixando planilha: {file_xlsx['name']}")
+        xlsx_fh = download_specific_file(service, file_xlsx['id'])
         process_controle_excel(xlsx_fh)
     else:
         print("⚠️ Planilha Controle.xlsx não encontrada no Drive.")
-
-    print("\n🚀 Pipeline finalizada com sucesso!")
