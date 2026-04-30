@@ -192,6 +192,16 @@ group by data_compra, cartao_final, parcela
 order by data_compra;
 
 
+select * from analytics.fact_pagamentos_unificados limit 10;
+
+select * from analytics.fact_unified_payments;
+
+select * from analytics.category_mapping limit 10;
+
+SELECT * FROM analytics.payments LIMIT 100;
+
+select * from postgres_raw.pagamento_dinheiro;
+
 SELECT 
     category_name, 
     COUNT(*) as total_transacoes, 
@@ -219,7 +229,7 @@ SELECT schema_name, table_name
 FROM information_schema.tables 
 WHERE table_name = 'fact_investments';
 
-SELECT * FROM analytics.fact_credit_cards_statement;
+
 
 drop table analytics.fact_investiments;
 
@@ -228,13 +238,21 @@ drop schema if exists postgres_raw cascade;
 -- Recreating the Schema again
 create schema postgres_raw;
 
--- Remove os dados brutos (O Python vai recriar)
-DROP SCHEMA IF EXISTS postgres_raw CASCADE;
+DROP SCHEMA IF EXISTS public CASCADE;
+CREATE SCHEMA public;
+DROP SCHEMA IF EXISTS analytics CASCADE;
+CREATE SCHEMA analytics;
 
--- Remove as análises (O dbt vai recriar)
-DROP SCHEMA IF EXISTS analytics CASCADE; 
--- (Ou o nome do schema que você configurou no seu dbt_project.yml)
+SELECT table_name 
+FROM information_schema.tables 
+WHERE table_schema = 'postgres_raw';
 
 select * from postgres_raw.payment_card;
+
+DROP schema analytics cascade;
+
+SELECT table_name 
+FROM information_schema.tables 
+WHERE table_schema = 'postgres_raw';
 
 select * from analytics.fact_credit_card_statements;
