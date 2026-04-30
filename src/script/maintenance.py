@@ -1,7 +1,7 @@
 import os
 from sqlalchemy import text
 # Importamos as configurações do seu control7
-from control7 import engine, HISTORICAL_XLSX_DIR, LAKE_DIR, ingest_historical_file, process_credit_card
+from archive.control7 import engine, HISTORICAL_XLSX_DIR, LAKE_DIR, ingest_historical_file, process_credit_card
 
 def rebuild_everything():
     # ... (todo o código anterior de limpar banco e rodar Excel/Lake) ...
@@ -9,7 +9,7 @@ def rebuild_everything():
     print("\n📝 --- INICIANDO CARGA DE DADOS MANUAIS E EXTRAS ---")
 
     # 1. Processar Contas Manuais (Contas a Pagar)
-    from control7 import process_manual_bills, process_investments, process_vehicle_consumption
+    from archive.control7 import process_manual_bills, process_investments, process_vehicle_consumption
     
     df_m = process_manual_bills()
     if not df_m.empty:
