@@ -9,6 +9,7 @@
 # Ambiente Virtual
 venv/
 .env
+.vscode
 
 # Dados Sensíveis (O mais importante!)
 data/Controle.xlsx
