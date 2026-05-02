@@ -1,7 +1,7 @@
 -- Limpa a tabela para garantir que não haja duplicatas antes de inserir a lista completa
-TRUNCATE TABLE compras;
+TRUNCATE TABLE purchases;
 
-INSERT INTO compras 
+INSERT INTO purchases 
 (data_compra, estabelecimento, tipo_estabelecimento, produto_codigo, descricao, categoria, quantidade, unidade, preco_unitario_bruto, desconto_item, valor_total_final)
 VALUES
 -- ==========================================
