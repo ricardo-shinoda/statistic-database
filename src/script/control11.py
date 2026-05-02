@@ -63,31 +63,6 @@ def get_processed_files():
     except:
         return []
 
-# --- NÚCLEO DE PROCESSAMENTO DRIVE ---
-
-# def download_file_to_memory(service, folder_id, file_extension):
-#     """Busca um arquivo na pasta e traz para a memória"""
-#     query = f"'{folder_id}' in parents and name contains '{file_extension}' and trashed = false"
-#     results = service.files().list(q=query, fields="files(id, name)").execute()
-#     files = results.get('files', [])
-    
-#     if not files:
-#         return None, None
-
-#     # Pega o primeiro arquivo encontrado (ou o mais recente se precisar de lógica extra)
-#     file_id = files[0]['id']
-#     file_name = files[0]['name']
-    
-#     request = service.files().get_media(fileId=file_id)
-#     fh = io.BytesIO()
-#     downloader = MediaIoBaseDownload(fh, request)
-#     done = False
-#     while not done:
-#         _, done = downloader.next_chunk()
-    
-#     fh.seek(0)
-#     return fh, file_name
-
 def download_specific_file(service, file_id):
     request = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
