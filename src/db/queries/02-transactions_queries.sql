@@ -210,6 +210,8 @@ FROM analytics.fact_unified_payments
 GROUP BY 1
 ORDER BY valor_total DESC;
 
+select * From postgres_raw.purchases;
+
 
 select * from postgres_raw.stock_movements;
 
