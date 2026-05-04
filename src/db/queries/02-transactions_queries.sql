@@ -258,3 +258,65 @@ FROM information_schema.tables
 WHERE table_schema = 'postgres_raw';
 
 select * from analytics.fact_credit_card_statements;
+
+-- Montante gasto por mês (ano + mês)
+SELECT 
+    DATE_TRUNC('month', purchased_at) AS mes,
+    TO_CHAR(DATE_TRUNC('month', purchased_at), 'YYYY-MM') AS ano_mes,
+    SUM(amount_brl) AS total_gasto_mes,
+    COUNT(*) AS quantidade_transacoes
+    -- SUM(amount_brl) / COUNT(*) AS ticket_medio
+FROM analytics.fact_credit_card_statements
+WHERE DATE_TRUNC('month', purchased_at) = DATE_TRUNC('month', '2026-04-01'::DATE);
+-- GROUP BY DATE_TRUNC('month', purchased_at)
+-- ORDER BY DATE_TRUNC('month', purchased_at) DESC;
+
+select 
+    DATE_TRUNC('month', purchased_at) AS mes
+    sum(am)
+from analytics.fact_credit_card_statements;
+
+-- Ver todas as transações do mês com problema, ordenadas por valor
+SELECT 
+    purchased_at,
+    description,
+    amount_brl,
+    final_category,
+    CASE 
+        WHEN amount_brl < 0 THEN 'CREDITO/ESTORNO'
+        ELSE 'DEBITO'
+    END AS tipo_lancamento
+FROM analytics.fact_credit_card_statements
+WHERE DATE_TRUNC('month', purchased_at) = DATE_TRUNC('month', '2026-04-01'::DATE)  -- ajuste o mês
+ORDER BY amount_brl ASC;  -- valores negativos primeiro
+
+SELECT 
+    DATE_TRUNC('month', purchased_at) AS mes,
+    TO_CHAR(DATE_TRUNC('month', purchased_at), 'YYYY-MM') AS ano_mes,
+    SUM(CASE 
+        WHEN description = 'inclusao de pagamento' THEN 0
+        WHEN description LIKE '%pagamento%' THEN 0
+        ELSE amount_brl 
+    END) AS total_gasto_real,
+    COUNT(CASE 
+        WHEN description = 'inclusao de pagamento' THEN NULL
+        ELSE 1 
+    END) AS quantidade_transacoes
+FROM analytics.fact_credit_card_statements
+WHERE amount_brl > 0 OR description = 'estorno tarifa'  -- mantém estorno de tarifa
+GROUP BY DATE_TRUNC('month', purchased_at)
+ORDER BY mes DESC;
+
+-- Ver todas as transações de abril com seus valores brutos
+SELECT 
+    purchased_at,
+    description,
+    amount_brl,
+    CASE 
+        WHEN amount_brl < 0 THEN 'CREDITO'
+        ELSE 'DEBITO'
+    END AS tipo
+FROM analytics.fact_credit_card_statements
+WHERE purchased_at >= '2026-04-01' 
+  AND purchased_at < '2026-05-01'
+ORDER BY purchased_at;
