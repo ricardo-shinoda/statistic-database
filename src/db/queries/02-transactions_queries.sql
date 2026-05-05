@@ -320,3 +320,39 @@ FROM analytics.fact_credit_card_statements
 WHERE purchased_at >= '2026-04-01' 
   AND purchased_at < '2026-05-01'
 ORDER BY purchased_at;
+
+select * from analytics.fact_credit_card_statements;
+
+SELECT 
+    invoice_name,
+    SUM(amount_brl) as total_fatura
+FROM analytics.fact_credit_card_statements
+-- Ajuste o nome abaixo para o nome exato que aparece no seu arquivo_origem
+WHERE invoice_name LIKE '%2026-04-05%' 
+  AND description NOT LIKE '%pagamento%'
+GROUP BY invoice_name;
+
+SELECT column_name 
+FROM information_schema.columns 
+WHERE table_schema = 'analytics' 
+  AND table_name = 'fact_credit_card_statements';
+
+  SELECT DISTINCT invoice_name 
+FROM analytics.fact_credit_card_statements
+ORDER BY 1;
+
+
+-- sum of amount grouped by month
+SELECT 
+    invoice_name AS fatura,
+    -- Soma apenas o que é gasto, ignorando o pagamento da fatura anterior
+    ROUND(CAST(SUM(CASE 
+        WHEN description ILIKE '%pagamento%' THEN 0 
+        ELSE amount_brl 
+    END) AS NUMERIC),2) AS montante_total,
+    COUNT(*) AS qtd_transacoes
+FROM analytics.fact_credit_card_statements
+GROUP BY invoice_name
+ORDER BY invoice_name DESC;
+
+TRUNCATE TABLE postgres_raw.payment_card;
