@@ -25,6 +25,8 @@ def prepare_database(engine):
         # O commit é necessário para comandos DDL em algumas versões
         conn.execute(text("DROP SCHEMA IF EXISTS analytics CASCADE;"))
         conn.execute(text("COMMIT;"))
+        conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
+        conn.commit() # Importante para confirmar a limpeza
     print("✅ Schema analytics removido com sucesso.")
 
 # Chame a função antes de começar a ingestão
