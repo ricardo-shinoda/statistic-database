@@ -307,7 +307,7 @@ WHERE amount_brl > 0 OR description = 'estorno tarifa'  -- mantém estorno de ta
 GROUP BY DATE_TRUNC('month', purchased_at)
 ORDER BY mes DESC;
 
--- Ver todas as transações de abril com seus valores brutos
+-- Ver todas as transações de abril com seus valores brutos135533
 SELECT 
     purchased_at,
     description,
@@ -321,38 +321,41 @@ WHERE purchased_at >= '2026-04-01'
   AND purchased_at < '2026-05-01'
 ORDER BY purchased_at;
 
-select * from analytics.fact_credit_card_statements;
+SELECT 
+    TO_CHAR(DATE_TRUNC('month', purchased_at), 'YYYY-MM') AS mes,
+    -- Soma total (convertendo para numeric para evitar imprecisão de double precision)
+    ROUND(CAST(SUM(ABS(amount_brl)) AS NUMERIC), 2) AS total_gasto_geral,
+    
+    -- Divisão por método para conferência
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'credit_card' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_cartao,
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'pix' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_pix,
+    
+    COUNT(*) AS quantidade_transacoes
+FROM analytics.fact_unified_payments
+-- Filtro essencial para não contar o pagamento da fatura como um gasto novo
+WHERE description NOT ILIKE '%pagamento%' 
+  AND description NOT ILIKE '%inclusao de pagamento%'
+GROUP BY 1
+ORDER BY 1 DESC;
 
 SELECT 
-    invoice_name,
-    SUM(amount_brl) as total_fatura
-FROM analytics.fact_credit_card_statements
--- Ajuste o nome abaixo para o nome exato que aparece no seu arquivo_origem
-WHERE invoice_name LIKE '%2026-04-05%' 
-  AND description NOT LIKE '%pagamento%'
-GROUP BY invoice_name;
-
-SELECT column_name 
-FROM information_schema.columns 
-WHERE table_schema = 'analytics' 
-  AND table_name = 'fact_credit_card_statements';
-
-  SELECT DISTINCT invoice_name 
-FROM analytics.fact_credit_card_statements
-ORDER BY 1;
-
-
--- sum of amount grouped by month
-SELECT 
-    invoice_name AS fatura,
-    -- Soma apenas o que é gasto, ignorando o pagamento da fatura anterior
-    ROUND(CAST(SUM(CASE 
-        WHEN description ILIKE '%pagamento%' THEN 0 
-        ELSE amount_brl 
-    END) AS NUMERIC),2) AS montante_total,
+    TO_CHAR(DATE_TRUNC('month', purchased_at), 'YYYY-MM') AS mes,
+    -- Soma total real (Gasto Cartão + Gasto PIX direto)
+    ROUND(CAST(SUM(ABS(amount_brl)) AS NUMERIC), 2) AS total_gasto_geral,
+    
+    -- Detalhamento para conferência
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'credit_card' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_cartao,
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'pix' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_pix_puro,
+    
     COUNT(*) AS qtd_transacoes
-FROM analytics.fact_credit_card_statements
-GROUP BY invoice_name
-ORDER BY invoice_name DESC;
-
-TRUNCATE TABLE postgres_raw.payment_card;
+FROM analytics.fact_unified_payments
+WHERE 
+    -- 1. Remove registros de "Pagamento" dentro da fatura do cartão
+    description NOT ILIKE '%pagamento%' 
+    AND description NOT ILIKE '%inclusao de pagamento%'
+    -- 2. Remove o PIX/Débito que foi usado para pagar a fatura do C6 ou outros bancos
+    AND description NOT ILIKE '%Fatura%'
+    AND description NOT ILIKE '%Cartão de crédito%'
+    AND description NOT ILIKE '%C6 Bank%'
+GROUP BY 1
+ORDER BY 1 DESC;
