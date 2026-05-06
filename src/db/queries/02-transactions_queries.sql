@@ -338,15 +338,109 @@ WHERE description NOT ILIKE '%pagamento%'
 GROUP BY 1
 ORDER BY 1 DESC;
 
+SELECT 
+    -- Mudamos para invoice_name para bater com o valor real do boleto pago
+    COALESCE(invoice_name, TO_CHAR(purchased_at, 'YYYY-MM')) AS competencia,
+    
+    -- Total do Cartão (agora considerando o ciclo da fatura)
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'credit_card' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_cartao_fatura,
+    
+    -- Total do PIX (limpando pagamentos de fatura e transferências)
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'pix' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_pix_puro,
+    
+    ROUND(CAST(SUM(ABS(amount_brl)) AS NUMERIC), 2) AS total_consumo_real
+FROM analytics.fact_unified_payments
+WHERE 
+    -- Filtros mais agressivos para limpar pagamentos de fatura do PIX
+    description NOT ILIKE '%pagamento%' 
+    AND description NOT ILIKE '%inclusao%'
+    AND description NOT ILIKE '%fatura%'  -- Isso remove o "Fatura - Cartão de crédito C6"
+    AND description NOT ILIKE '%c6 bank%' -- Remove transferências entre suas contas se houver
+GROUP BY 1
+ORDER BY 1 DESC;
+
+
+WITH card_invoices AS (
+    -- Pegamos a informação de fatura direto da fonte onde ela existe
+    SELECT 
+        payment_id, 
+        invoice_name 
+    FROM analytics.fact_credit_card_statements
+)
 
 SELECT 
-    -- Se for cartão, agrupa pela fatura. Se for PIX, agrupa pelo mês da compra.
+    -- Se for cartão, usamos a fatura. Se for PIX, usamos o mês da compra.
+    COALESCE(ci.invoice_name, TO_CHAR(f.purchased_at, 'YYYY-MM')) AS competencia,
+    
+    -- Valor do Cartão (Agrupado por Fatura)
+    ROUND(CAST(SUM(CASE WHEN f.payment_type = 'credit_card' THEN ABS(f.amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_cartao_fatura,
+    
+    -- Valor do PIX (Limpando os pagamentos de fatura que você mencionou)
+    ROUND(CAST(SUM(CASE WHEN f.payment_type = 'pix' THEN ABS(f.amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_pix_limpo,
+    
+    ROUND(CAST(SUM(ABS(f.amount_brl)) AS NUMERIC), 2) AS total_geral
+FROM analytics.fact_unified_payments f
+LEFT JOIN card_invoices ci ON f.payment_id = ci.payment_id
+WHERE 
+    f.description NOT ILIKE '%pagamento%' 
+    AND f.description NOT ILIKE '%inclusao%'
+    AND f.description NOT ILIKE '%fatura%'  -- Remove "Fatura - Cartão de crédito C6"
+    AND f.description NOT ILIKE '%c6 bank%' -- Limpa transferências internas
+GROUP BY 1
+ORDER BY 1 DESC;
+
+SELECT 
+    -- Normaliza: Transforma 'Fatura_2026-04-05.csv' em '2026-04'
+    -- E mantém o PIX que já está como '2026-04'
     CASE 
-        WHEN payment_type = 'credit_card' THEN SUBSTRING(invoice_name FROM 8 FOR 7) -- Extrai '2026-04' do nome do arquivo
+        WHEN invoice_name LIKE 'Fatura_%' THEN SUBSTRING(invoice_name FROM 8 FOR 7)
+        WHEN invoice_name IS NOT NULL THEN invoice_name
         ELSE TO_CHAR(purchased_at, 'YYYY-MM') 
     END AS competencia,
-    ROUND(CAST(SUM(amount_brl) AS NUMERIC), 2) AS total_real
+    
+    -- Soma do Cartão (Já bateu os R$ 15.013,76 no seu print!)
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'credit_card' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_cartao,
+    
+    -- Soma do PIX (Limpando as faturas para não duplicar)
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'pix' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_pix,
+    
+    -- Total real que saiu do seu bolso
+    ROUND(CAST(SUM(ABS(amount_brl)) AS NUMERIC), 2) AS gasto_total_real
 FROM analytics.fact_unified_payments
-WHERE description NOT ILIKE '%pagamento%'
+WHERE 
+    description NOT ILIKE '%pagamento%' 
+    AND description NOT ILIKE '%inclusao%'
+    AND description NOT ILIKE '%fatura%'  -- Filtro crucial para limpar o PIX do C6
+    AND description NOT ILIKE '%c6 bank%'
+GROUP BY 1
+ORDER BY 1 DESC;
+
+SELECT description, amount_brl 
+FROM analytics.fact_unified_payments 
+WHERE invoice_name LIKE '%2026-04%' 
+  AND payment_type = 'credit_card'
+ORDER BY amount_brl ASC; -- Os créditos aparecerão primeiro
+
+SELECT 
+    CASE 
+        WHEN invoice_name LIKE 'Fatura_%' THEN SUBSTRING(invoice_name FROM 8 FOR 7)
+        ELSE TO_CHAR(purchased_at, 'YYYY-MM') 
+    END AS competencia,
+    
+    -- Usamos SUM direto (sem ABS) para que créditos/estornos diminuam o total
+    -- Multiplicamos por -1 se os gastos forem negativos no seu banco para exibir positivo
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'credit_card' THEN amount_brl ELSE 0 END) AS NUMERIC), 2) AS total_cartao,
+    
+    ROUND(CAST(SUM(CASE WHEN payment_type = 'pix' THEN amount_brl ELSE 0 END) AS NUMERIC), 2) AS total_pix,
+    
+    ROUND(CAST(SUM(amount_brl) AS NUMERIC), 2) AS total_geral
+FROM analytics.fact_unified_payments
+WHERE 
+    -- Filtros de exclusão de pagamentos/transferências
+    description NOT ILIKE '%pagamento%' 
+    AND description NOT ILIKE '%inclusao%'
+    AND description NOT ILIKE '%fatura%'
+    AND description NOT ILIKE '%c6 bank%'
+    AND description NOT ILIKE '%transferencia enviada%' -- Teste adicionar este
 GROUP BY 1
 ORDER BY 1 DESC;
