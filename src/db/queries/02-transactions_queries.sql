@@ -389,32 +389,6 @@ WHERE
 GROUP BY 1
 ORDER BY 1 DESC;
 
-SELECT 
-    -- Normaliza: Transforma 'Fatura_2026-04-05.csv' em '2026-04'
-    -- E mantém o PIX que já está como '2026-04'
-    CASE 
-        WHEN invoice_name LIKE 'Fatura_%' THEN SUBSTRING(invoice_name FROM 8 FOR 7)
-        WHEN invoice_name IS NOT NULL THEN invoice_name
-        ELSE TO_CHAR(purchased_at, 'YYYY-MM') 
-    END AS competencia,
-    
-    -- Soma do Cartão (Já bateu os R$ 15.013,76 no seu print!)
-    ROUND(CAST(SUM(CASE WHEN payment_type = 'credit_card' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_cartao,
-    
-    -- Soma do PIX (Limpando as faturas para não duplicar)
-    ROUND(CAST(SUM(CASE WHEN payment_type = 'pix' THEN ABS(amount_brl) ELSE 0 END) AS NUMERIC), 2) AS total_pix,
-    
-    -- Total real que saiu do seu bolso
-    ROUND(CAST(SUM(ABS(amount_brl)) AS NUMERIC), 2) AS gasto_total_real
-FROM analytics.fact_unified_payments
-WHERE 
-    description NOT ILIKE '%pagamento%' 
-    AND description NOT ILIKE '%inclusao%'
-    AND description NOT ILIKE '%fatura%'  -- Filtro crucial para limpar o PIX do C6
-    AND description NOT ILIKE '%c6 bank%'
-GROUP BY 1
-ORDER BY 1 DESC;
-
 SELECT description, amount_brl 
 FROM analytics.fact_unified_payments 
 WHERE invoice_name LIKE '%2026-04%' 
