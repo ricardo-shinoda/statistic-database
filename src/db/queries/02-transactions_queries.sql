@@ -421,26 +421,126 @@ WHERE invoice_name LIKE '%2026-04%'
   AND payment_type = 'credit_card'
 ORDER BY amount_brl ASC; -- Os créditos aparecerão primeiro
 
+
+
+SELECT description, amount_brl, invoice_name
+FROM analytics.fact_unified_payments
+WHERE invoice_name LIKE 'Fatura_2026-05%'
+  AND (
+     description ILIKE '%pagamento%' 
+     OR description ILIKE '%inclusao%'
+     OR description ILIKE '%fatura%'
+     OR description ILIKE '%c6 bank%'
+     OR description ILIKE '%transferencia enviada%'
+  );
+
+
+select
+    sum(amount_brl) as soma
+From analytics.fact_credit_card_statements
+where invoice_name = 'Fatura_2026-05-05.csv';
+
+select * from analytics.fact_credit_card_statements
+where invoice_name = 'Fatura_2026-05-05.csv';
+
+select * from analytics.fact_credit_card_statements;
+
 SELECT 
     CASE 
         WHEN invoice_name LIKE 'Fatura_%' THEN SUBSTRING(invoice_name FROM 8 FOR 7)
         ELSE TO_CHAR(purchased_at, 'YYYY-MM') 
     END AS competencia,
     
-    -- Usamos SUM direto (sem ABS) para que créditos/estornos diminuam o total
-    -- Multiplicamos por -1 se os gastos forem negativos no seu banco para exibir positivo
-    ROUND(CAST(SUM(CASE WHEN payment_type = 'credit_card' THEN amount_brl ELSE 0 END) AS NUMERIC), 2) AS total_cartao,
+    ROUND(CAST(SUM(
+        CASE 
+            WHEN payment_type = 'credit_card' THEN amount_brl 
+            ELSE 0 
+        END
+    ) AS NUMERIC), 2) AS total_cartao,
     
-    ROUND(CAST(SUM(CASE WHEN payment_type = 'pix' THEN amount_brl ELSE 0 END) AS NUMERIC), 2) AS total_pix,
+    ROUND(CAST(SUM(
+        CASE 
+            WHEN payment_type = 'pix' THEN amount_brl 
+            ELSE 0 
+        END
+    ) AS NUMERIC), 2) AS total_pix,
     
     ROUND(CAST(SUM(amount_brl) AS NUMERIC), 2) AS total_geral
 FROM analytics.fact_unified_payments
 WHERE 
-    -- Filtros de exclusão de pagamentos/transferências
-    description NOT ILIKE '%pagamento%' 
-    AND description NOT ILIKE '%inclusao%'
-    AND description NOT ILIKE '%fatura%'
+    -- 1. Mantemos apenas o que é gasto real ou estorno de loja
+    -- Baseado no seu print, pagamentos de fatura não possuem categoria preenchida
+    final_category IS NOT NULL 
+    AND final_category <> '-'
+    AND final_category <> ''
+    
+    -- 2. Filtros de segurança para transferências bancárias que possam ter categoria
     AND description NOT ILIKE '%c6 bank%'
-    AND description NOT ILIKE '%transferencia enviada%' -- Teste adicionar este
+    AND description NOT ILIKE '%transferencia enviada%'
+    
+    -- 3. Exceção específica para a Natura (caso ela venha sem categoria por algum motivo)
+    OR (description ILIKE '%natura%' AND payment_type = 'credit_card')
+
+GROUP BY 1
+ORDER BY 1 DESC;
+
+
+-- Querie to know all the credit card invoices
+SELECT 
+    CASE 
+        WHEN invoice_name LIKE 'Fatura_%' THEN SUBSTRING(invoice_name FROM 8 FOR 7)
+        ELSE TO_CHAR(purchased_at, 'YYYY-MM') 
+    END AS competencia,
+    ROUND(SUM(amount_brl)::NUMERIC, 2) AS total_fatura,
+    COUNT(*) AS qtd_transacoes,
+    -- Validação: Se o total for negativo, ainda tem pagamento de fatura "vazando"
+    CASE WHEN SUM(amount_brl) < 0 THEN '❌ REVISAR: Valor Negativo' ELSE '✅ OK' END as status
+FROM analytics.fact_credit_card_statements -- Use o nome da tabela que o dbt criou
+GROUP BY 1
+ORDER BY 1 DESC;
+
+-- To know the total amount of an expecific month,
+  SELECT 
+    SUM(valor) as total_bruto_maio,
+    SUM(CASE 
+        WHEN lower(descricao) ilike '%fatura%' THEN valor 
+        WHEN lower(descricao) ilike '%c6 bank%' THEN valor 
+        WHEN upper(categoria) = 'PAGAMENTOS' AND upper(subcategoria) = 'CARTÃO DE CRÉDITO' THEN valor
+        ELSE 0 
+    END) as total_que_o_dbt_esta_tirando,
+    SUM(CASE 
+        WHEN NOT (lower(descricao) ilike '%fatura%' 
+             OR lower(descricao) ilike '%c6 bank%' 
+             OR (upper(categoria) = 'PAGAMENTOS' AND upper(subcategoria) = 'CARTÃO DE CRÉDITO')) 
+        THEN valor 
+        ELSE 0 
+    END) as total_que_deveria_ir_para_fact
+FROM postgres_raw.payment_pix
+WHERE data_compra >= '2026-05-01' AND data_compra <= '2026-05-31';
+
+
+-- Total expenses value (monthly)
+SELECT 
+    -- Agrupamento por mês/ano (Competência)
+    CASE 
+        WHEN invoice_name LIKE 'Fatura_%' THEN SUBSTRING(invoice_name FROM 8 FOR 7)
+        ELSE TO_CHAR(purchased_at, 'YYYY-MM') 
+    END AS competencia,
+    
+    -- Soma de Cartão de Crédito
+    ROUND(SUM(CASE WHEN payment_type = 'credit_card' THEN amount_brl ELSE 0 END)::NUMERIC, 2) AS gasto_cartao,
+    
+    -- Soma de PIX (Já limpo de transferências internas e faturas)
+    ROUND(SUM(CASE WHEN payment_type = 'pix' THEN amount_brl ELSE 0 END)::NUMERIC, 2) AS gasto_pix,
+    
+    -- Consolidado Total
+    ROUND(SUM(amount_brl)::NUMERIC, 2) AS total_consumo_mes,
+    
+    -- Contador de transações para conferência
+    COUNT(*) AS total_transacoes
+FROM analytics.fact_unified_payments
+-- Garante que só pegamos o que é gasto real (filtros do dbt)
+WHERE is_internal_transfer = FALSE 
+  AND is_payment_transaction = FALSE
 GROUP BY 1
 ORDER BY 1 DESC;
