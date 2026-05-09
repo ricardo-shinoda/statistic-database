@@ -18,19 +18,35 @@ host, port, db_name = os.getenv('DB_HOST'), os.getenv('DB_PORT'), os.getenv('DB_
 db_url = f'postgresql://{user}:{password}@{host}:{port}/{db_name}'
 engine = create_engine(db_url)
 
-# Prepare the datebase to receive new imputs
-def prepare_database(engine):
-    print("🧹 Limpando schema analytics para evitar conflitos de dependência...")
-    with engine.connect() as conn:
-        # O commit é necessário para comandos DDL em algumas versões
-        conn.execute(text("DROP SCHEMA IF EXISTS analytics CASCADE;"))
-        conn.execute(text("COMMIT;"))
-        conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
-        conn.commit() # Importante para confirmar a limpeza
-    print("✅ Schema analytics removido com sucesso.")
+## USE THIS IF I WANT TO DELETE ALL THE TABLES.
+# Prepare the datebase to receive new imputs   
+# def prepare_database(engine):
+#     print("🧹 Limpando schema analytics para evitar conflitos de dependência...")
+#     with engine.connect() as conn:
+#         # O commit é necessário para comandos DDL em algumas versões
+#         conn.execute(text("DROP SCHEMA IF EXISTS analytics CASCADE;"))
+#         conn.execute(text("COMMIT;"))
+#         conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
+#         conn.commit() # Importante para confirmar a limpeza
+#     print("✅ Schema analytics removido com sucesso.")
 
-# Chame a função antes de começar a ingestão
-prepare_database(engine)
+# # Chame a função antes de começar a ingestão
+# prepare_database(engine)
+
+# USE THIS IF I WANT TO KEEP THE DATA AND JUST APPEND
+def prepare_database(engine):
+    # Em vez de DROP SCHEMA analytics, apenas garantimos que o RAW existe
+    print("🛠️ Preparando ambiente de ingestão...")
+    with engine.connect() as conn:
+        # Garante que o schema de entrada existe
+        conn.execute(text("CREATE SCHEMA IF NOT EXISTS postgres_raw;"))
+        
+        # Se você REALMENTE precisa limpar a tabela de entrada (modelo de carga total),
+        # mantenha o TRUNCATE apenas na tabela específica, nunca o DROP SCHEMA.
+        # conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
+        
+        conn.execute(text("COMMIT;"))
+    print("✅ Ambiente pronto para receber dados brutos.")
 
 # Credenciais Google Drive
 SERVICE_ACCOUNT_FILE = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
@@ -57,7 +73,7 @@ def clean_currency(series):
     return series.apply(clean_single_value)
 
 def get_processed_files():
-    """Verifica no banco quais faturas já existem para não duplicar"""
+    """Verify in DB which invoices existis to avoid duplicity"""
     try:
         with engine.connect() as conn:
             df = pd.read_sql("SELECT DISTINCT arquivo_origem FROM postgres_raw.payment_card", conn)
@@ -78,7 +94,7 @@ def download_specific_file(service, file_id):
 # --- FUNÇÕES DE CARGA ---
 
 def process_controle_excel(file_buffer):
-    """Processa todas as abas da planilha Controle.xlsx"""
+    """Process all the tabs from spreadsheet: Controle.xlsx"""
     sheets = {
         'payment_pix': 'pagamento',
         'income': 'entrada',
@@ -100,9 +116,8 @@ def process_controle_excel(file_buffer):
         print(f"✅ Tabela {table} (Aba: {sheet}) atualizada.")
 
 def process_faturas_zip(file_buffer):
-    """Abre o ZIP protegido e carrega apenas os CSVs novos"""
+    """Open the protected ZIP and load only the new csv"""
     already_done = get_processed_files()
-    # Pega a senha do .env e converte para bytes (necessário para o zipfile)
     zip_password = os.getenv('ZIP_PASSWORD')
     pwd_bytes = zip_password.encode('utf-8') if zip_password else None
     
@@ -131,18 +146,18 @@ def process_faturas_zip(file_buffer):
                 else:
                     print(f"   ⏭️ Pulando {filename} (já existe no banco).")
 
-# --- EXECUÇÃO PRINCIPAL ---
+# --- MAIN EXECUTION ---
 
 if __name__ == "__main__":
     print("🏗️ Iniciando Pipeline de Dados (Google Drive -> Postgres)...")
     service = get_drive_service()
 
-    # 1. Preparar Schema
+    # 1. Prepare schema
     with engine.connect() as conn:
         conn.execute(text("CREATE SCHEMA IF NOT EXISTS postgres_raw;"))
         conn.commit()
 
-    # 2. Processar Faturas (ZIPs Múltiplos)
+    # 2. Process invoices
     print("\n📦 Verificando Faturas no Drive...")
     query = f"'{GOOGLE_DRIVE_INVOICE}' in parents and name contains '.zip' and trashed = false"
     results = service.files().list(q=query, fields="files(id, name)").execute()
@@ -153,11 +168,11 @@ if __name__ == "__main__":
         for file in files:
             print(f"👉 Baixando: {file['name']}")
             zip_fh = download_specific_file(service, file['id'])
-            process_faturas_zip(zip_fh) # Sua função original já trata o duplicado com 'get_processed_files'
+            process_faturas_zip(zip_fh)
     else:
         print("⚠️ Nenhum arquivo ZIP encontrado na pasta de faturas.")
 
-    # 3. Processar Controle (Excel)
+    # 3. Process Control (Excel)
     print("\n📊 Verificando Planilha Controle no Drive...")
     # Fazemos uma busca similar à do ZIP, mas focada no .xlsx da planilha de controle
     query_xlsx = f"'{GOOGLE_DRIVE_CONTROLE}' in parents and name contains '.xlsx' and trashed = false"
