@@ -518,3 +518,5 @@ WHERE is_internal_transfer = FALSE
   AND is_payment_transaction = FALSE
 GROUP BY 1
 ORDER BY 1 DESC;
+
+select * from analytics.fact_investments;
