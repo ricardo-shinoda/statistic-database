@@ -51,4 +51,4 @@ def to_send_email(email_to, drive_link):
         server.quit()
 
 
-to_send_email('ricardoshinoda@gmail.com', g_drive_link)
+to_send_email('ricardoshinoda@hotmail.com', g_drive_link)
