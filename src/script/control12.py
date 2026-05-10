@@ -20,33 +20,18 @@ engine = create_engine(db_url)
 
 ## USE THIS IF I WANT TO DELETE ALL THE TABLES.
 # Prepare the datebase to receive new imputs   
-# def prepare_database(engine):
-#     print("🧹 Limpando schema analytics para evitar conflitos de dependência...")
-#     with engine.connect() as conn:
-#         # O commit é necessário para comandos DDL em algumas versões
-#         conn.execute(text("DROP SCHEMA IF EXISTS analytics CASCADE;"))
-#         conn.execute(text("COMMIT;"))
-#         conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
-#         conn.commit() # Importante para confirmar a limpeza
-#     print("✅ Schema analytics removido com sucesso.")
-
-# # Chame a função antes de começar a ingestão
-# prepare_database(engine)
-
-# USE THIS IF I WANT TO KEEP THE DATA AND JUST APPEND
 def prepare_database(engine):
-    # Em vez de DROP SCHEMA analytics, apenas garantimos que o RAW existe
-    print("🛠️ Preparando ambiente de ingestão...")
+    print("🧹 Limpando schema analytics para evitar conflitos de dependência...")
     with engine.connect() as conn:
-        # Garante que o schema de entrada existe
-        conn.execute(text("CREATE SCHEMA IF NOT EXISTS postgres_raw;"))
-        
-        # Se você REALMENTE precisa limpar a tabela de entrada (modelo de carga total),
-        # mantenha o TRUNCATE apenas na tabela específica, nunca o DROP SCHEMA.
-        # conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
-        
+        # O commit é necessário para comandos DDL em algumas versões
+        conn.execute(text("DROP SCHEMA IF EXISTS analytics CASCADE;"))
         conn.execute(text("COMMIT;"))
-    print("✅ Ambiente pronto para receber dados brutos.")
+        conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
+        conn.commit() # Importante para confirmar a limpeza
+    print("✅ Schema analytics removido com sucesso.")
+
+# Chame a função antes de começar a ingestão
+prepare_database(engine)
 
 # Credenciais Google Drive
 SERVICE_ACCOUNT_FILE = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
@@ -93,30 +78,8 @@ def download_specific_file(service, file_id):
 
 # --- FUNÇÕES DE CARGA ---
 
-# def process_controle_excel(file_buffer):
-#     """Process all the tabs from spreadsheet: Controle.xlsx"""
-#     sheets = {
-#         'payment_pix': 'pagamento',
-#         'income': 'entrada',
-#         'nissan_kicks_consumption': 'nissan_kicks_consumption',
-#         'stock_movements': 'stock_movements'
-#     }
-    
-#     for table, sheet in sheets.items():
-#         df = pd.read_excel(file_buffer, sheet_name=sheet)
-#         df = df.dropna(how='all')
-        
-#         # Limpeza de colunas numéricas
-#         for col in df.columns:
-#             if any(k in col.lower() for k in ['valor', 'value', 'preço', 'taxa', 'km', 'litro']):
-#                 df[col] = clean_currency(df[col])
-        
-#         df['arquivo_origem'] = 'Controle.xlsx'
-#         df.to_sql(table, engine, schema='postgres_raw', if_exists='replace', index=False)
-#         print(f"✅ Tabela {table} (Aba: {sheet}) atualizada.")
-
 def process_controle_excel(file_buffer):
-    """Processa todas as abas da planilha Controle.xlsx"""
+    """Process all the tabs from spreadsheet: Controle.xlsx"""
     sheets = {
         'payment_pix': 'pagamento',
         'income': 'entrada',
@@ -134,25 +97,8 @@ def process_controle_excel(file_buffer):
                 df[col] = clean_currency(df[col])
         
         df['arquivo_origem'] = 'Controle.xlsx'
-
-        # --- NOVA LÓGICA DE INTEGRAÇÃO COM DBT ---
-        with engine.connect() as conn:
-            try:
-                # Tenta limpar os dados (preserva as Views do dbt que dependem da tabela)
-                conn.execute(text(f"TRUNCATE TABLE postgres_raw.{table} CASCADE;"))
-                conn.commit()
-                current_mode = 'append'
-                print(f"🧹 Tabela {table} limpa (Truncate).")
-            except Exception:
-                # Se a tabela não existir (ou as colunas mudaram drasticamente), 
-                # o rollback permite que o pandas crie a tabela do zero
-                conn.rollback()
-                current_mode = 'replace'
-                print(f"🆕 Tabela {table} será recriada (Replace).")
-        
-        # Faz a carga dos dados
-        df.to_sql(table, engine, schema='postgres_raw', if_exists=current_mode, index=False)
-        print(f"✅ Tabela {table} (Aba: {sheet}) atualizada com sucesso.")
+        df.to_sql(table, engine, schema='postgres_raw', if_exists='replace', index=False)
+        print(f"✅ Tabela {table} (Aba: {sheet}) atualizada.")
 
 def process_faturas_zip(file_buffer):
     """Open the protected ZIP and load only the new csv"""
