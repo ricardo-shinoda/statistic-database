@@ -8,52 +8,53 @@ import zipfile
 import os
 import re
 from dotenv import load_dotenv
+from pathlib import Path
 
-# 1. CONFIGURAÇÃO DE AMBIENTE
-load_dotenv()
+# 1. ENVIRONMENT CONFIGURATION
 
-# Credenciais Banco
+root_path = Path(__file__).parent.parent.parent
+env_path = root_path / '.env'
+load_dotenv(dotenv_path=env_path)
+
+# Bank credentials
 user, password = os.getenv('DB_USER'), os.getenv('DB_PASS')
 host, port, db_name = os.getenv('DB_HOST'), os.getenv('DB_PORT'), os.getenv('DB_NAME')
 db_url = f'postgresql://{user}:{password}@{host}:{port}/{db_name}'
 engine = create_engine(db_url)
 
-## USE THIS IF I WANT TO DELETE ALL THE TABLES.
-# Prepare the datebase to receive new imputs   
-# def prepare_database(engine):
-#     print("🧹 Limpando schema analytics para evitar conflitos de dependência...")
-#     with engine.connect() as conn:
-#         # O commit é necessário para comandos DDL em algumas versões
-#         conn.execute(text("DROP SCHEMA IF EXISTS analytics CASCADE;"))
-#         conn.execute(text("COMMIT;"))
-#         conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
-#         conn.commit() # Importante para confirmar a limpeza
-#     print("✅ Schema analytics removido com sucesso.")
+creds_env_value = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+if creds_env_value:
+    SERVICE_ACCOUNT_FILE = root_path / creds_env_value
+else:
+    SERVICE_ACCOUNT_FILE = None
 
-# # Chame a função antes de começar a ingestão
-# prepare_database(engine)
+print(f"DEBUG: Caminho Raiz: {root_path}")
+print(f"DEBUG: Buscando credenciais em: {SERVICE_ACCOUNT_FILE}")
 
 # USE THIS IF I WANT TO KEEP THE DATA AND JUST APPEND
 def prepare_database(engine):
-    # Em vez de DROP SCHEMA analytics, apenas garantimos que o RAW existe
-    print("🛠️ Preparando ambiente de ingestão...")
+    print("🛠️ Preparing ingestion environment...")
     with engine.connect() as conn:
-        # Garante que o schema de entrada existe
         conn.execute(text("CREATE SCHEMA IF NOT EXISTS postgres_raw;"))
         
-        # Se você REALMENTE precisa limpar a tabela de entrada (modelo de carga total),
-        # mantenha o TRUNCATE apenas na tabela específica, nunca o DROP SCHEMA.
+        # If you REALLY need to clean the input table (full load model),
+        # keep the TRUNCATE only on the specific table, never the DROP SCHEMA.
         # conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
         
         conn.execute(text("COMMIT;"))
-    print("✅ Ambiente pronto para receber dados brutos.")
+    print("✅ Environment ready to receive raw data.")
 
-# Credenciais Google Drive
+# Credentials from Google Drive
 SERVICE_ACCOUNT_FILE = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 GOOGLE_DRIVE_INVOICE = os.getenv('GOOGLE_DRIVE_INVOICE')
 GOOGLE_DRIVE_CONTROLE = os.getenv('GOOGLE_DRIVE_CONTROLE')
 
-# --- FUNÇÕES DE APOIO ---
+creds_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+SERVICE_ACCOUNT_FILE = root_path / creds_path if creds_path else None
+
+print(f"DEBUG: Searching for credentials at: {SERVICE_ACCOUNT_FILE}")
+
+## Backup functions
 
 def get_drive_service():
     creds = service_account.Credentials.from_service_account_file(
@@ -91,29 +92,7 @@ def download_specific_file(service, file_id):
     fh.seek(0)
     return fh
 
-# --- FUNÇÕES DE CARGA ---
-
-# def process_controle_excel(file_buffer):
-#     """Process all the tabs from spreadsheet: Controle.xlsx"""
-#     sheets = {
-#         'payment_pix': 'pagamento',
-#         'income': 'entrada',
-#         'nissan_kicks_consumption': 'nissan_kicks_consumption',
-#         'stock_movements': 'stock_movements'
-#     }
-    
-#     for table, sheet in sheets.items():
-#         df = pd.read_excel(file_buffer, sheet_name=sheet)
-#         df = df.dropna(how='all')
-        
-#         # Limpeza de colunas numéricas
-#         for col in df.columns:
-#             if any(k in col.lower() for k in ['valor', 'value', 'preço', 'taxa', 'km', 'litro']):
-#                 df[col] = clean_currency(df[col])
-        
-#         df['arquivo_origem'] = 'Controle.xlsx'
-#         df.to_sql(table, engine, schema='postgres_raw', if_exists='replace', index=False)
-#         print(f"✅ Tabela {table} (Aba: {sheet}) atualizada.")
+# --- LOADING FUNCTION ---
 
 def process_controle_excel(file_buffer):
     """Processa todas as abas da planilha Controle.xlsx"""
@@ -128,29 +107,26 @@ def process_controle_excel(file_buffer):
         df = pd.read_excel(file_buffer, sheet_name=sheet)
         df = df.dropna(how='all')
         
-        # Limpeza de colunas numéricas
+        # Cleaning numeric columns
         for col in df.columns:
             if any(k in col.lower() for k in ['valor', 'value', 'preço', 'taxa', 'km', 'litro']):
                 df[col] = clean_currency(df[col])
         
         df['arquivo_origem'] = 'Controle.xlsx'
 
-        # --- NOVA LÓGICA DE INTEGRAÇÃO COM DBT ---
+        # --- INTEGRATION WITH DBT ---
         with engine.connect() as conn:
             try:
-                # Tenta limpar os dados (preserva as Views do dbt que dependem da tabela)
                 conn.execute(text(f"TRUNCATE TABLE postgres_raw.{table} CASCADE;"))
                 conn.commit()
                 current_mode = 'append'
                 print(f"🧹 Tabela {table} limpa (Truncate).")
             except Exception:
-                # Se a tabela não existir (ou as colunas mudaram drasticamente), 
-                # o rollback permite que o pandas crie a tabela do zero
                 conn.rollback()
                 current_mode = 'replace'
                 print(f"🆕 Tabela {table} será recriada (Replace).")
         
-        # Faz a carga dos dados
+        # Load
         df.to_sql(table, engine, schema='postgres_raw', if_exists=current_mode, index=False)
         print(f"✅ Tabela {table} (Aba: {sheet}) atualizada com sucesso.")
 
@@ -213,13 +189,11 @@ if __name__ == "__main__":
 
     # 3. Process Control (Excel)
     print("\n📊 Verificando Planilha Controle no Drive...")
-    # Fazemos uma busca similar à do ZIP, mas focada no .xlsx da planilha de controle
     query_xlsx = f"'{GOOGLE_DRIVE_CONTROLE}' in parents and name contains '.xlsx' and trashed = false"
     results_xlsx = service.files().list(q=query_xlsx, fields="files(id, name)").execute()
     files_xlsx = results_xlsx.get('files', [])
 
     if files_xlsx:
-        # Pegamos o primeiro (ou único) arquivo de controle encontrado
         file_xlsx = files_xlsx[0]
         print(f"👉 Baixando planilha: {file_xlsx['name']}")
         xlsx_fh = download_specific_file(service, file_xlsx['id'])

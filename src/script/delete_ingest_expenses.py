@@ -9,10 +9,10 @@ import os
 import re
 from dotenv import load_dotenv
 
-# 1. CONFIGURAÇÃO DE AMBIENTE
+# 1. ENVIRONMENT CONFIGURATION
 load_dotenv()
 
-# Credenciais Banco
+# BANK CREDENTIALS
 user, password = os.getenv('DB_USER'), os.getenv('DB_PASS')
 host, port, db_name = os.getenv('DB_HOST'), os.getenv('DB_PORT'), os.getenv('DB_NAME')
 db_url = f'postgresql://{user}:{password}@{host}:{port}/{db_name}'
@@ -23,22 +23,21 @@ engine = create_engine(db_url)
 def prepare_database(engine):
     print("🧹 Limpando schema analytics para evitar conflitos de dependência...")
     with engine.connect() as conn:
-        # O commit é necessário para comandos DDL em algumas versões
         conn.execute(text("DROP SCHEMA IF EXISTS analytics CASCADE;"))
         conn.execute(text("COMMIT;"))
         conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
-        conn.commit() # Importante para confirmar a limpeza
+        conn.commit() # important to confirm the cleaning
     print("✅ Schema analytics removido com sucesso.")
 
-# Chame a função antes de começar a ingestão
+# Calling the function before start the ingestion
 prepare_database(engine)
 
-# Credenciais Google Drive
+# Google Drive Credentials
 SERVICE_ACCOUNT_FILE = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 GOOGLE_DRIVE_INVOICE = os.getenv('GOOGLE_DRIVE_INVOICE')
 GOOGLE_DRIVE_CONTROLE = os.getenv('GOOGLE_DRIVE_CONTROLE')
 
-# --- FUNÇÕES DE APOIO ---
+# --- BACKUP FUNCTIONS ---
 
 def get_drive_service():
     creds = service_account.Credentials.from_service_account_file(
@@ -76,7 +75,7 @@ def download_specific_file(service, file_id):
     fh.seek(0)
     return fh
 
-# --- FUNÇÕES DE CARGA ---
+# --- LOADING FUNCTIONS ---
 
 def process_controle_excel(file_buffer):
     """Process all the tabs from spreadsheet: Controle.xlsx"""
@@ -91,7 +90,7 @@ def process_controle_excel(file_buffer):
         df = pd.read_excel(file_buffer, sheet_name=sheet)
         df = df.dropna(how='all')
         
-        # Limpeza de colunas numéricas
+        # Cleaning numeric columns
         for col in df.columns:
             if any(k in col.lower() for k in ['valor', 'value', 'preço', 'taxa', 'km', 'litro']):
                 df[col] = clean_currency(df[col])
@@ -159,13 +158,11 @@ if __name__ == "__main__":
 
     # 3. Process Control (Excel)
     print("\n📊 Verificando Planilha Controle no Drive...")
-    # Fazemos uma busca similar à do ZIP, mas focada no .xlsx da planilha de controle
     query_xlsx = f"'{GOOGLE_DRIVE_CONTROLE}' in parents and name contains '.xlsx' and trashed = false"
     results_xlsx = service.files().list(q=query_xlsx, fields="files(id, name)").execute()
     files_xlsx = results_xlsx.get('files', [])
 
     if files_xlsx:
-        # Pegamos o primeiro (ou único) arquivo de controle encontrado
         file_xlsx = files_xlsx[0]
         print(f"👉 Baixando planilha: {file_xlsx['name']}")
         xlsx_fh = download_specific_file(service, file_xlsx['id'])
