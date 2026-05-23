@@ -1,15 +1,17 @@
 services:
-  postgres-db:
+  # Mudamos o nome do serviço para bater com o seu antigo
+  statistic_db:
     image: postgres:15
-    container_name: postgres_local
+    container_name: statistic_db
     environment:
-      POSTGRES_USER: ricardo
-      POSTGRES_PASSWORD: 3136
-      POSTGRES_DB: statistic_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      # Se você usava um volume antes, o Compose vai manter os dados salvos aqui
+      - statistic_postgres_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+  statistic_postgres_data:
