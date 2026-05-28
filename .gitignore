@@ -7,14 +7,9 @@
 
 
 # Ambiente Virtual
-venv/
+.venv/
 .env
 .vscode
-
-# Dados Sensíveis (O mais importante!)
-data/Controle.xlsx
-data/*.json
-data_lake/
 
 # Python cache
 __pycache__/
