@@ -469,7 +469,7 @@ SELECT
     COUNT(*) AS qtd_transacoes,
     -- Validação: Se o total for negativo, ainda tem pagamento de fatura "vazando"
     CASE WHEN SUM(amount_brl) < 0 THEN '❌ REVISAR: Valor Negativo' ELSE '✅ OK' END as status
-FROM analytics.fact_credit_card_statements -- Use o nome da tabela que o dbt criou
+FROM analytics.fct_credit_card_statements -- Use o nome da tabela que o dbt criou
 GROUP BY 1
 ORDER BY 1 DESC;
 
@@ -512,11 +512,11 @@ SELECT
     
     -- Contador de transações para conferência
     COUNT(*) AS total_transacoes
-FROM analytics.fact_unified_payments
+FROM analytics.fct_unified_payments
 -- Garante que só pegamos o que é gasto real (filtros do dbt)
 WHERE is_internal_transfer = FALSE 
   AND is_payment_transaction = FALSE
 GROUP BY 1
 ORDER BY 1 DESC;
 
-select * from analytics.fact_investments;
+select * from analytics.fct_investments;
