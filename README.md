@@ -1,84 +1,78 @@
-# Personal Finance ETL Pipeline: Google Drive to PostgreSQL
+# Statistic Database Pipeline
 
-A modern data engineering pipeline designed to automate personal finance tracking. This project implements an **ELT (Extract, Load, Transform)** architecture, extracting raw financial data from Google Drive, loading it into a PostgreSQL container, and transforming it into analytical models using dbt.
+An automated data ingestion pipeline designed to extract personal financial data from multiple sources (Google Drive spreadsheets and raw credit card invoices), apply transformations, and load the structured data into a local PostgreSQL instance.
 
-## 🏗 System Architecture
-The pipeline is divided into two main stages:
-1.  **Ingestion Layer (Python):** Handles OAuth2 authentication with Google Drive API, downloads credit card invoices and control spreadsheets, and loads them into the `postgres_raw` schema.
-2.  **Transformation Layer (dbt):** Cleans, tests, and models the raw data into a star schema (`analytics` schema) for financial insights.
+## Architecture & Data Flow
 
----
+[ Google Drive: Excel Sheets ] ───► [ Python Ingestion Scripts ] ───► [ Local PostgreSQL ]
+[ Local /invoices Directory  ] ───►       (Pandas / ETL)         ───►   (DDL/DML Schema)
 
-## 🚀 Getting Started
 
-### 1. Data Ingestion (Python Repository)
-This repository handles the **Extract & Load** phases. It targets the `postgres_raw` schema and manages database dependencies.
-
-* **Step 1: Activate Virtual Environment**
-    ```bash
-    source venv/bin/activate
-    ```
-* **Step 2: Spin up the Infrastructure**
-    Ensure your PostgreSQL container is running via OrbStack or terminal:
-    ```bash
-    docker-compose up -d
-    ```
-* **Step 3: Database Connection**
-    Verify connection to `statistic_db` via port **5433** (standardized for macOS compatibility).
-* **Step 4: Execute Ingestion**
-    Run the control script to sync Google Drive data with the database:
-    ```bash
-    python3 src/script/control11.py
-    ```
-    *Note: The script is configured to automatically drop the `analytics` schema to handle DDL dependencies.*
+1. **Automated Data Ingestion:**
+   * Fetches financial data (Pix transactions, income stream entries, and investment logs) from specialized Excel spreadsheets hosted on Google Drive using `credentials.json`.
+   * Scans local data directories for raw credit card invoice documents (PDFs/CSVs).
+2. **Transformation:** Python ETL components clean, structure, and convert raw inputs into a unified transactional schema using Pandas.
+3. **Loading:** Data is incrementally appended or synced into a containerized PostgreSQL target database.
 
 ---
 
-### 2. Data Transformation (dbt Repository)
-This repository handles the **Transform** phase, turning raw data into business-ready tables.
+## Repository Structure
 
-* **Step 1: Activate Virtual Environment**
-    ```bash
-    source venv/bin/activate
-    ```
-* **Step 2: Initialize Seeds**
-    Load static mapping files (CSV) into the database:
-    ```bash
-    dbt seed
-    ```
-* **Step 3: Run Transformations**
-    Execute the models to build the analytical layers:
-    ```bash
-    dbt run
-    ```
+Based on the project organization seen in your workspace:
 
----
+```text
+statistic-database/
+├── database/                   # Database schema management and queries
+│   ├── ddl/                    # Data Definition Language scripts
+│   │   └── create_manual_items_table.sql
+│   ├── dml/                    # Data Manipulation Language scripts
+│   │   └── insert_market_data.sql
+│   └── queries/                # Analytical and transactional SQL scripts
+│       └── transactions_queries.sql
+├── data_samples/               # Mock data for portfolio evaluation and testing
+│   ├── drive_mock_sample.xlsx  # Dummy spreadsheet simulating Google Drive input
+│   └── invoice_mock_sample.csv # Dummy credit card statement structure
+├── src/script/                 # Core Python ETL pipeline components
+│   ├── append_ingest_expenses.py   # Incremental ingestion pipeline for expenses
+│   ├── delete_ingest_expenses.py   # Idempotent cleanup and rerun utilities
+│   ├── send_email.py               # Notification and alerting utility
+│   └── sync_merchant_expenses.py   # Google Drive and invoice synchronization script
+├── .env.example                # Template for environment variables (Safe for Git)
+├── credentials.json            # Google Drive API service account credentials (Ignored)
+├── docker-compose.yml          # Local PostgreSQL database container configuration
+├── requirements.txt            # Python dependencies (Pandas, SQLAlchemy, psycopg2, etc.)
+└── Postgres local.session.sql  # Database client session configuration
+```
 
-## ✅ Best Practices & Validation
+Core Engineering Principles
 
-To ensure data integrity and pipeline health, it is recommended to run the following checks:
+    Idempotency: The pipeline utilizes delete_ingest_expenses.py to wipe specific transactional windows before re-running ingestion tasks. This ensures that duplicate execution does not cause primary key conflicts, data drift, or row duplication.
 
-1.  **Connection Test:** Before running models, verify the dbt-to-Postgres connection:
-    ```bash
-    dbt debug
-    ```
-2.  **Data Quality Tests:** Validate your data integrity (null checks, unique keys, accepted values) after every run:
-    ```bash
-    dbt test
-    ```
-3.  **Source Freshness:** Check if the Python ingestion successfully updated the raw tables:
-    ```bash
-    dbt source freshness
-    ```
+    Decoupled Architecture: Schema definition and database migration state (SQL) are fully decoupled from the pipeline transformation and orchestration logic (Python).
 
----
+    Secure Environment Design: Production credentials and API access tokens are entirely isolated via environment variables (.env) and explicitly blocked from version control using strict .gitignore rules.
 
-## 🛠 Tech Stack
-* **Language:** Python 3.9+ (SQLAlchemy, Pandas)
-* **Database:** PostgreSQL 15 (Docker/OrbStack)
-* **Transformation:** dbt-core (Data Build Tool)
-* **API:** Google Drive API v3
+Environment Setup
+1. Prerequisites
 
----
-**Author:** Ricardo Shinoda
-**Role:** Data Engineer
+Ensure you have Docker, Docker Compose, and Python 3.11+ installed on your host system.
+2. Infrastructure Setup
+
+Spin up the local PostgreSQL container instance:
+
+```Bash
+docker compose up -d
+``` 
+3. Python Environment & Dependencies
+
+Initialize the virtual environment and install dependencies:
+
+```Bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+``` 
+
+4. Configuration
+
+This is where things get tricky, I will think of an example data, so you will be able to test this script without needing me to share sensitive personal data.
