@@ -17,3 +17,10 @@ WHERE is_internal_transfer = FALSE
   AND is_payment_transaction = FALSE
 GROUP BY 1
 ORDER BY 1 DESC;
+
+SELECT * FROM postgres_raw.stock_movements;
+
+select
+    sum(total_amount)
+from postgres_raw.stock_movements
+where investor like "Lucas";
