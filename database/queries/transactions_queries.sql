@@ -18,9 +18,27 @@ WHERE is_internal_transfer = FALSE
 GROUP BY 1
 ORDER BY 1 DESC;
 
-SELECT * FROM postgres_raw.stock_movements;
+SELECT
+    *
+FROM postgres_raw.stock_movements;
 
 select
+    month,
+    transaction_date,
     sum(total_amount)
 from postgres_raw.stock_movements
-where investor like "Lucas";
+where investor like 'Lucas'
+AND transaction_type IN ('Dividendo', 'Juros sobre capital', 'Rendimento')
+group by month, transaction_date
+order by 2 DESC;
+
+select
+    investor,
+    month,
+    transaction_date,
+    round(sum(total_amount)::numeric, 2) as total_rendimentos
+from postgres_raw.stock_movements
+where investor like 'Casa'
+  and transaction_type in ('Dividendo', 'Juros sobre capital', 'Rendimento')
+group by month, transaction_date, investor
+order by 2 desc;
