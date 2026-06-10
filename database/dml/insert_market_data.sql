@@ -1,4 +1,3 @@
--- Limpa a tabela para garantir que não haja duplicatas antes de inserir a lista completa
 TRUNCATE TABLE purchases;
 
 INSERT INTO postgres_raw.purchases 

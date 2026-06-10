@@ -39,12 +39,7 @@ def load_merchant_mappings():
     print("⏳ Sincronizando mapeamentos com o schema postgres_raw...")
     
     try:
-        # Colunas que queremos salvar
         required_cols = ['original_description', 'mapped_category', 'mapped_subcategory']
-        
-        # Enviamos para o schema 'postgres_raw'. 
-        # Usamos 'replace' porque o JSON é nossa "Fonte da Verdade". 
-        # Se você mudar o JSON, a tabela no banco atualiza 100%.
         df[required_cols].to_sql(
             'merchant_categories', 
             engine, 

@@ -1,5 +1,4 @@
 services:
-  # Mudamos o nome do serviço para bater com o seu antigo
   statistic_db:
     image: postgres:15
     container_name: statistic_db
@@ -10,7 +9,6 @@ services:
     ports:
       - "${DB_PORT}:5432"
     volumes:
-      # Se você usava um volume antes, o Compose vai manter os dados salvos aqui
       - statistic_postgres_data:/var/lib/postgresql/data
 
 volumes:

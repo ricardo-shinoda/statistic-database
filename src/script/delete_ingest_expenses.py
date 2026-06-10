@@ -9,27 +9,26 @@ import os
 import re
 from dotenv import load_dotenv
 
-# 1. ENVIRONMENT CONFIGURATION
+# --- ENVIRONMENT CONFIGURATION
 load_dotenv()
 
-# BANK CREDENTIALS
+# --- BANK CREDENTIALS ---
 user, password = os.getenv('DB_USER'), os.getenv('DB_PASS')
 host, port, db_name = os.getenv('DB_HOST'), os.getenv('DB_PORT'), os.getenv('DB_NAME')
 db_url = f'postgresql://{user}:{password}@{host}:{port}/{db_name}'
 engine = create_engine(db_url)
 
-## USE THIS IF I WANT TO DELETE ALL THE TABLES.
-# Prepare the datebase to receive new imputs   
+## --- USE THIS IF I WANT TO DELETE ALL THE TABLES. ---
 def prepare_database(engine):
     print("🧹 Limpando schema analytics para evitar conflitos de dependência...")
     with engine.connect() as conn:
         conn.execute(text("DROP SCHEMA IF EXISTS analytics CASCADE;"))
         conn.execute(text("COMMIT;"))
         conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
-        conn.commit() # important to confirm the cleaning
+        conn.commit()
     print("✅ Schema analytics removido com sucesso.")
 
-# Calling the function before start the ingestion
+# --- Calling the function before start the ingestion ---
 prepare_database(engine)
 
 # Google Drive Credentials

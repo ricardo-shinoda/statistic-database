@@ -1,4 +1,3 @@
--- Total expenses value (monthly)
 SELECT 
     CASE 
         WHEN invoice_name LIKE 'Fatura_%' THEN SUBSTRING(invoice_name FROM 8 FOR 7)
@@ -71,7 +70,6 @@ order by saldo_liquido_aportado DESC;
 
 
 with total_investimentos_c6 as (
-    -- 1. Soma tudo que foi aportado no CDB do C6 Bank
     select
         investor,
         coalesce(sum(
@@ -88,7 +86,6 @@ with total_investimentos_c6 as (
 ),
 
 total_saidas as (
-    -- 2. Soma todas as saídas/pagamentos
     select
         investor,
         coalesce(sum(total_amount), 0) as total_pago
@@ -97,7 +94,6 @@ total_saidas as (
 ),
 
 total_entradas as (
-    -- 3. Soma todas as receitas/entradas
     select
         investor,
         coalesce(sum(total_amount), 0) as total_recebido
@@ -105,7 +101,6 @@ total_entradas as (
     group by investor
 )
 
--- 4. Junta tudo e faz a matemática final: (CDB C6 + Entradas) - Saídas
 select
     entradas.investor,
     round(entradas.total_recebido::numeric, 2) as mais_total_entradas,
@@ -123,7 +118,6 @@ order by saldo_atual_calculado DESC;
 select
     investor,
     ticker,
-    -- Soma a quantidade comprada e subtrai a quantidade vendida
     sum(
         case 
             when transaction_type = 'Compra' then quantity
@@ -142,7 +136,7 @@ select * from analytics.fct_investments_portfolio;
 SELECT * FROM analytics.fct_investments_dividends;
 
 
--- total amount of dividends received by investor
+-- total amount of divideds received by investor
 select 
     investor, 
     sum(valor_recebido) as total_proventos_historico
