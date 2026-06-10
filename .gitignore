@@ -24,3 +24,6 @@ Statistic.session.sql
 
 settings.json
 .vscode/
+
+# Private files
+insert_market_data.sql

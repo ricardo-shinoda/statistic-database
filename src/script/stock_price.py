@@ -9,13 +9,11 @@ load_dotenv()
 conn = psycopg2.connect(
     host= os.getenv('DB_HOST'),
     database= os.getenv('DB_NAME'),
-    user = os.getenv('DB_USER'),       # ajuste com suas credenciais se mudou
-    password = os.getenv('DB_PASS')    # ajuste com suas credenciais se mudou
+    user = os.getenv('DB_USER'),
+    password = os.getenv('DB_PASS')  
 )
 cursor = conn.cursor()
 
-# 2. Busca todos os tickers únicos (ações/FIIs) cadastrados nas suas movimentações
-# Ignoramos moedas virtuais ou tickers manuais como 'CDB' ou 'Dolar' que não estão na bolsa
 cursor.execute("""
     SELECT DISTINCT ticker 
     FROM postgres_raw.stock_movements 
@@ -39,9 +37,9 @@ ticker_mapping = {
     'Bitcoin': 'BTC-BRL',
     'ETH': 'ETH-BRL',
     'B3': 'B3SA3',
-    'VIIA3': 'BHIA3',     # Via Varejo virou Casas Bahia (BHIA3)
-    'MALL11': 'BTLG11',   # Incorporado pelo BTLG11
-    'AESB3': 'AURE3'      # Incorporada pela Auren Energia (AURE3)
+    'VIIA3': 'BHIA3', 
+    'MALL11': 'BTLG11',
+    'AESB3': 'AURE3'
 }
 
 # Lista de falsos tickers que devem ser completamente ignorados
@@ -50,29 +48,25 @@ ignore_list = ['Emolumentos', 'IRRS s/ operações', 'IRFR s/ operações', 'Tax
 print(f"Atualizando preços para os tickers: {tickers}")
 
 for ticker in tickers:
-    # Ignora linhas de taxas operacionais da planilha
     if ticker in ignore_list or ticker is None:
         continue
         
     try:
-        # Verifica se o ticker precisa de tradução (ex: Bitcoin -> BTC-BRL, VIIA3 -> BHIA3)
         if ticker in ticker_mapping:
             yahoo_ticker = ticker_mapping[ticker]
         else:
-            # Para ações normais brasileiras, adiciona o sufixo .SA
             yahoo_ticker = f"{ticker}.SA" if not ticker.endswith('.SA') else ticker
         
         ticker_data = yf.Ticker(yahoo_ticker)
         price = ticker_data.fast_info['last_price']
         
-        # Garante que o preço veio válido antes de salvar
         if price is not None and price > 0:
             cursor.execute("""
                 INSERT INTO postgres_raw.current_prices (ticker, current_price, updated_at)
                 VALUES (%s, %s, CURRENT_TIMESTAMP)
                 ON CONFLICT (ticker) 
                 DO UPDATE SET current_price = EXCLUDED.current_price, updated_at = CURRENT_TIMESTAMP;
-            """, (ticker, price)) # Mantém o ticker original como chave para bater com o seu dbt!
+            """, (ticker, price))
             
             print(f"✅ {ticker} (no Yahoo como {yahoo_ticker}): R$ {price:.2f}")
         else:

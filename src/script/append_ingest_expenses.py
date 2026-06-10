@@ -10,13 +10,13 @@ import re
 from dotenv import load_dotenv
 from pathlib import Path
 
-# 1. ENVIRONMENT CONFIGURATION
+# --- ENVIRONMENT CONFIGURATION ---
 
 root_path = Path(__file__).parent.parent.parent
 env_path = root_path / '.env'
 load_dotenv(dotenv_path=env_path)
 
-# Bank credentials
+# --- BANK CREDENTIALS ---
 user, password = os.getenv('DB_USER'), os.getenv('DB_PASS')
 host, port, db_name = os.getenv('DB_HOST'), os.getenv('DB_PORT'), os.getenv('DB_NAME')
 db_url = f'postgresql://{user}:{password}@{host}:{port}/{db_name}'
@@ -31,20 +31,15 @@ else:
 print(f"DEBUG: Caminho Raiz: {root_path}")
 print(f"DEBUG: Buscando credenciais em: {SERVICE_ACCOUNT_FILE}")
 
-# USE THIS IF I WANT TO KEEP THE DATA AND JUST APPEND
+# --- USE THIS IF I WANT TO KEEP THE DATA AND JUST APPEND ---
 def prepare_database(engine):
     print("🛠️ Preparing ingestion environment...")
     with engine.connect() as conn:
         conn.execute(text("CREATE SCHEMA IF NOT EXISTS postgres_raw;"))
-        
-        # If you REALLY need to clean the input table (full load model),
-        # keep the TRUNCATE only on the specific table, never the DROP SCHEMA.
-        # conn.execute(text("TRUNCATE TABLE postgres_raw.payment_card;"))
-        
         conn.execute(text("COMMIT;"))
     print("✅ Environment ready to receive raw data.")
 
-# Credentials from Google Drive
+# --- CREDENTIALS FROM GOOGLE DRIVE ---
 SERVICE_ACCOUNT_FILE = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 GOOGLE_DRIVE_INVOICE = os.getenv('GOOGLE_DRIVE_INVOICE')
 GOOGLE_DRIVE_CONTROLE = os.getenv('GOOGLE_DRIVE_CONTROLE')
@@ -54,7 +49,7 @@ SERVICE_ACCOUNT_FILE = root_path / creds_path if creds_path else None
 
 print(f"DEBUG: Searching for credentials at: {SERVICE_ACCOUNT_FILE}")
 
-## Backup functions
+## --- BANK FUNCTIONS ---
 
 def get_drive_service():
     creds = service_account.Credentials.from_service_account_file(
@@ -107,7 +102,6 @@ def process_controle_excel(file_buffer):
         df = pd.read_excel(file_buffer, sheet_name=sheet)
         df = df.dropna(how='all')
         
-        # Cleaning numeric columns
         for col in df.columns:
             if any(k in col.lower() for k in ['valor', 'value', 'preço', 'taxa', 'km', 'litro']):
                 df[col] = clean_currency(df[col])
@@ -126,7 +120,7 @@ def process_controle_excel(file_buffer):
                 current_mode = 'replace'
                 print(f"🆕 Tabela {table} será recriada (Replace).")
         
-        # Load
+        # --- LOAD ---
         df.to_sql(table, engine, schema='postgres_raw', if_exists=current_mode, index=False)
         print(f"✅ Tabela {table} (Aba: {sheet}) atualizada com sucesso.")
 
