@@ -194,3 +194,6 @@ if __name__ == "__main__":
         process_controle_excel(xlsx_fh)
     else:
         print("⚠️ Planilha Controle.xlsx não encontrada no Drive.")
+
+
+    
