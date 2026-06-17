@@ -152,3 +152,7 @@ select
 from analytics.fct_investments_dividends
 group by 1, 2
 order by mes_competencia desc, investor;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 29cb9b0c0fb48ace09325e28b1ce1c20c4ae24a2
