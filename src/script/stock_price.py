@@ -17,7 +17,7 @@ cursor = conn.cursor()
 cursor.execute("""
     SELECT DISTINCT ticker 
     FROM postgres_raw.stock_movements 
-    WHERE ticker NOT IN ('CDB', 'Dolar') AND ticker IS NOT NULL;
+    WHERE ticker NOT IN ('CDB') AND ticker IS NOT NULL;
 """)
 tickers = [row[0] for row in cursor.fetchall()]
 
@@ -39,7 +39,8 @@ ticker_mapping = {
     'B3': 'B3SA3',
     'VIIA3': 'BHIA3', 
     'MALL11': 'BTLG11',
-    'AESB3': 'AURE3'
+    'AESB3': 'AURE3',
+    'Dolar': 'BRL=X'
 }
 
 # Lista de falsos tickers que devem ser completamente ignorados
