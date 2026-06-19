@@ -40,3 +40,9 @@ typing_extensions==4.15.0
 tzdata==2023.3
 uritemplate==4.2.0
 urllib3==2.0.7
+
+# Gráficos e Conexão com o Banco
+psycopg2-binary>=2.9.0
+sqlalchemy>=2.0.0
+pandas>=2.0.0
+plotly>=5.0.0

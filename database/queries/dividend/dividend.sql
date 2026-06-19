@@ -47,3 +47,28 @@ where investor like 'Lucas'
 AND transaction_type IN ('Dividendo', 'Juros sobre capital', 'Rendimento')
 group by month, transaction_date
 order by 2 DESC;
+
+SELECT * FROM analytics.fct_investments_dividends;
+
+SELECT
+    investor,
+    mes_competencia,
+    sum(valor_recebido)
+from analytics.fct_investments_dividends
+group by 2, 1;
+
+SELECT
+    initcap(m.investor) as investor,
+    month as mes_competencia,
+    round(sum(m.total_amount)::numeric, 2) as total_dividendos
+FROM postgres_raw.stock_movements m
+WHERE trim(lower(m.investor)) in ('lucas', 'luísa', 'ricardo', 'casa')
+  AND trim(lower(m.transaction_type)) in (
+        'dividendo', 
+        'juros sobre capital', 
+        'rendimento', 
+        'rendimento (dividendo)', 
+        'provento frações'
+  )
+GROUP BY 1, 2
+ORDER BY mes_competencia DESC, total_dividendos DESC;
