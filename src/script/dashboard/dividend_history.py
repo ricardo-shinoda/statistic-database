@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from dotenv import load_dotenv
 
 # Encontra a raiz do projeto dinamicamente a partir deste script
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 ENV_PATH = BASE_DIR / '.env'
 
 # Carrega o arquivo .env apontando para o caminho absoluto correto

@@ -72,3 +72,6 @@ WHERE trim(lower(m.investor)) in ('lucas', 'luísa', 'ricardo', 'casa')
   )
 GROUP BY 1, 2
 ORDER BY mes_competencia DESC, total_dividendos DESC;
+
+
+select * from analytics.fct_monthly_investments;
