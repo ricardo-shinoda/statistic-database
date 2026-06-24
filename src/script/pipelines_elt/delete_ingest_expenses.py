@@ -1,5 +1,5 @@
 import pandas as pd
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from googleapiclient.http import MediaIoBaseDownload
@@ -7,16 +7,13 @@ import io
 import zipfile
 import os
 import re
-from dotenv import load_dotenv
+from src.script.utils import get_database_engine
+from pathlib import Path
 
 # --- ENVIRONMENT CONFIGURATION
-load_dotenv()
-
-# --- BANK CREDENTIALS ---
-user, password = os.getenv('DB_USER'), os.getenv('DB_PASS')
-host, port, db_name = os.getenv('DB_HOST'), os.getenv('DB_PORT'), os.getenv('DB_NAME')
-db_url = f'postgresql://{user}:{password}@{host}:{port}/{db_name}'
-engine = create_engine(db_url)
+root_path = Path(__file__).parent.parent.parent.parent
+engine = get_database_engine()
+creds_env_value = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 
 ## --- USE THIS IF I WANT TO DELETE ALL THE TABLES. ---
 def prepare_database(engine):
@@ -32,7 +29,7 @@ def prepare_database(engine):
 prepare_database(engine)
 
 # Google Drive Credentials
-SERVICE_ACCOUNT_FILE = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+SERVICE_ACCOUNT_FILE = root_path / creds_env_value
 GOOGLE_DRIVE_INVOICE = os.getenv('GOOGLE_DRIVE_INVOICE')
 GOOGLE_DRIVE_CONTROLE = os.getenv('GOOGLE_DRIVE_CONTROLE')
 
@@ -82,7 +79,7 @@ def process_controle_excel(file_buffer):
         'payment_pix': 'pagamento',
         'income': 'entrada',
         'nissan_kicks_consumption': 'nissan_kicks_consumption',
-        'stock_movements': 'stock_movements'
+        'investments': 'investments'
     }
     
     for table, sheet in sheets.items():

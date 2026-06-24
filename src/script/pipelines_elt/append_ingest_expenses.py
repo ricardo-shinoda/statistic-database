@@ -1,5 +1,5 @@
 import pandas as pd
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from googleapiclient.http import MediaIoBaseDownload
@@ -7,20 +7,14 @@ import io
 import zipfile
 import os
 import re
-from dotenv import load_dotenv
 from pathlib import Path
+from src.script.utils import get_database_engine
 
 # --- ENVIRONMENT CONFIGURATION ---
 
-root_path = Path(__file__).parent.parent.parent
-env_path = root_path / '.env'
-load_dotenv(dotenv_path=env_path)
+root_path = Path(__file__).parent.parent.parent.parent
 
-# --- BANK CREDENTIALS ---
-user, password = os.getenv('DB_USER'), os.getenv('DB_PASS')
-host, port, db_name = os.getenv('DB_HOST'), os.getenv('DB_PORT'), os.getenv('DB_NAME')
-db_url = f'postgresql://{user}:{password}@{host}:{port}/{db_name}'
-engine = create_engine(db_url)
+engine = get_database_engine()
 
 creds_env_value = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 if creds_env_value:
@@ -40,12 +34,8 @@ def prepare_database(engine):
     print("✅ Environment ready to receive raw data.")
 
 # --- CREDENTIALS FROM GOOGLE DRIVE ---
-SERVICE_ACCOUNT_FILE = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 GOOGLE_DRIVE_INVOICE = os.getenv('GOOGLE_DRIVE_INVOICE')
 GOOGLE_DRIVE_CONTROLE = os.getenv('GOOGLE_DRIVE_CONTROLE')
-
-creds_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-SERVICE_ACCOUNT_FILE = root_path / creds_path if creds_path else None
 
 print(f"DEBUG: Searching for credentials at: {SERVICE_ACCOUNT_FILE}")
 
@@ -95,7 +85,7 @@ def process_controle_excel(file_buffer):
         'payment_pix': 'pagamento',
         'income': 'entrada',
         'nissan_kicks_consumption': 'nissan_kicks_consumption',
-        'stock_movements': 'stock_movements'
+        'investments': 'investments'
     }
     
     for table, sheet in sheets.items():

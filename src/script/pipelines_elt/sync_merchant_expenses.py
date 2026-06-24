@@ -9,7 +9,6 @@ DB_URL = 'postgresql://ricardo:3136@localhost:5432/statistic_db'
 def load_merchant_mappings():
     engine = create_engine(DB_URL)
     
-    # Localizando o arquivo JSON
     current_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.abspath(os.path.join(current_dir, '..', 'description.json'))
     
@@ -24,7 +23,7 @@ def load_merchant_mappings():
     # --- 2. TRANSFORMATION (Pandas) ---
     df = pd.DataFrame(raw_data)
     
-    # Renomeando para seguir um padrão limpo no banco
+    # Renaming for a clean database naming standard
     rename_map = {
         'original': 'original_description', 
         'categoria': 'mapped_category',
@@ -32,10 +31,10 @@ def load_merchant_mappings():
     }
     df = df.rename(columns=rename_map)
 
-    # Removendo duplicatas para garantir integridade
+    # Deduplicating to ensure data integrity
     df = df.drop_duplicates(subset=['original_description'], keep='last')
 
-    # --- 3. LOADING (Ajustado para ELT/dbt) ---
+    # --- 3. LOADING (Adapted for ELT/dbt Workflow) ---
     print("⏳ Sincronizando mapeamentos com o schema postgres_raw...")
     
     try:

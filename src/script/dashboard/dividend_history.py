@@ -1,29 +1,8 @@
-import os
-from pathlib import Path
 import pandas as pd
 import plotly.express as px
-from sqlalchemy import create_engine
-from dotenv import load_dotenv
+from src.script.utils import get_database_engine
 
-# Encontra a raiz do projeto dinamicamente a partir deste script
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
-ENV_PATH = BASE_DIR / '.env'
-
-# Carrega o arquivo .env apontando para o caminho absoluto correto
-load_dotenv(dotenv_path=ENV_PATH)
-
-db_user = os.getenv('DB_USER')
-db_password = os.getenv('DB_PASS')
-db_host = os.getenv('DB_HOST')
-db_port = os.getenv('DB_PORT')
-db_name = os.getenv('DB_NAME')
-
-# Se as variáveis cruciais vierem vazias, mata o processo antes de tentar o banco
-if not db_user or not db_password:
-    raise ValueError(f"Erro: DB_USER ou DB_PASSWORD não foram encontrados no arquivo .env carregado em: {ENV_PATH}")
-
-connection_string = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
-engine = create_engine(connection_string)
+engine = get_database_engine()
 
 query = """
 SELECT
@@ -38,11 +17,10 @@ GROUP BY 1, 2
 
 df = pd.read_sql(query, engine)
 
-# 🛠️ A MÁGICA ESTÁ AQUI: Transforma a data em texto no formato 'Ano-Mês' (ex: 2026-03)
 df['mes_competencia'] = pd.to_datetime(df['mes_competencia']).dt.strftime('%Y-%m')
 df = df.sort_values('mes_competencia')
 
-# Gera o gráfico com o eixo X agora perfeitamente categorizado
+# Renders the chart with a perfectly categorized X-axis
 fig = px.bar(
     df, 
     x='mes_competencia', 
@@ -50,10 +28,10 @@ fig = px.bar(
     color='investor',
     title='Evolução de Recebimento de Dividendos por Investidor',
     labels={'mes_competencia': 'Mês de Competência', 'total_dividendos': 'Total (R$)', 'investor': 'Investidor'},
-    barmode='group'  # Mantém as barras de cada investidor lado a lado dentro do respectivo mês
+    barmode='group'
 )
 
-# Ajuste opcional para deixar o layout do eixo X limpo e legível
+# Optional formatting to ensure a clean and readable X-axis
 fig.update_layout(xaxis_type='category')
 
 fig.show()

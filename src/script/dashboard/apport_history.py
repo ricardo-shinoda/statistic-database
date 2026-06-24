@@ -1,9 +1,5 @@
-# import os
-# from pathlib import Path
 import pandas as pd
 import plotly.express as px
-# from sqlalchemy import create_engine
-# from dotenv import load_dotenv
 from  src.script.utils import get_database_engine
 
 engine = get_database_engine()
@@ -20,20 +16,21 @@ SELECT
             end
         )::numeric, 2
     ) as aporte_liquido
-FROM postgres_raw.stock_movements m
+FROM postgres_raw.investments m
 WHERE trim(lower(m.investor)) in ('lucas', 'luísa', 'ricardo', 'casa')
-  AND trim(lower(m.ticker)) not in ('cdb', 'taxa liquidação', 'emolumentos', 'irrs s/ operações', 'cdi')
+  AND trim(lower(m.ticker)) not in ('cdi', 'cdb')
   AND trim(lower(m.transaction_type)) not like 'calculo ir%%'
 GROUP BY 1, 2
 """
 
 df = pd.read_sql(query, engine)
+print(df[df['mes_competencia'].astype(str).str.contains('2026-06')])
 
-# 1. Garante que o Pandas trate a coluna como uma DATA de verdade (e nao texto)
+# 1. Making sure Pandas will not treat data as text
 df['mes_competencia'] = pd.to_datetime(df['mes_competencia'])
 df = df.sort_values('mes_competencia')
 
-# 2. Plota o grafico usando a linha do tempo nativa
+# 2. Plot the graph
 fig = px.line(
     df, 
     x='mes_competencia', 
@@ -44,13 +41,13 @@ fig = px.line(
     markers=True
 )
 
-# 3. Força o formato de exibição no eixo X para Ano-Mês, mantendo a escala temporal linear correta
+# 3. Forces the X-axis to display as Year-Month while preserving the correct linear time scale
 fig.update_layout(
     xaxis={
         'type': 'date',
-        'dtick': 'M1',        # Mostra marcações de 1 em 1 mês
-        'tickformat': '%Y-%m', # Garante o visual limpo '2026-03' no label
-        'tickangle': -90       # Rotaciona para não encavalar
+        'dtick': 'M1',        # Month to month
+        'tickformat': '%Y-%m', # Clean label
+        'tickangle': -90       # Rotationing
     }
 )
 

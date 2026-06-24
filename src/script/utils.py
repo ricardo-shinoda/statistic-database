@@ -18,7 +18,7 @@ def get_database_engine():
     if not db_user or not db_password:
         raise ValueError(f"Erro: Credenciais nao encontradas em: {ENV_PATH}")
     
-    # Validação profissional com fail-fast detalhado
+    # Robust validation with explicit fail-fast handling
     missing_vars = []
     if not db_user: missing_vars.append('DB_USER')
     if not db_password: missing_vars.append('DB_PASS')

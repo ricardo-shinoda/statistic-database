@@ -75,3 +75,13 @@ ORDER BY mes_competencia DESC, total_dividendos DESC;
 
 
 select * from analytics.fct_monthly_investments;
+
+SELECT 
+    m.investor,
+    m.transaction_date,
+    m.ticker,
+    m.transaction_type,
+    m.total_amount
+FROM postgres_raw.stock_movements m
+WHERE trim(lower(m.investor)) = 'casa'
+  AND date_trunc('month', m.transaction_date)::date = '2026-06-01'
