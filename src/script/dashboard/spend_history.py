@@ -1,50 +1,20 @@
 import pandas as pd
 import plotly.express as px
-import psycopg2
 import sys
 from src.script.utils import get_database_engine
 
-engine = get_database_engine()
-
-# def carregar_dados_do_postgres():
-#     """
-#     Conecta ao banco local PostgreSQL e traz os dados da fct_unified_payments.
-#     """
-#     try:
-#         # Ajuste as credenciais conforme o seu ambiente Docker/local
-#         conn = get_database_engine()
-        
-#         # Query ajustada para as suas colunas reais
-#         # Filtra para trazer apenas transações de pagamento reais e remove transferências internas
-#         query = """
-#             SELECT 
-#                 purchased_at,
-#                 amount_brl,
-#                 payment_type,
-#                 category_name
-#             FROM analytics.fct_unified_payments
-#             WHERE is_payment_transaction = TRUE
-#               AND is_internal_transfer = FALSE
-#               AND amount_brl > 0
-#         """
-#         df = pd.read_sql(query, conn)
-#         return df
-#     except Exception as e:
-#         print(f"Erro ao conectar ou ler dados do PostgreSQL: {e}")
-#         sys.exit(1)
-
 def carregar_dados_do_postgres():
     """
-    Conecta ao banco local PostgreSQL e traz os dados reais de gastos da fct_unified_payments.
+    Conecta ao banco local PostgreSQL usando a engine padronizada do utils
+    e busca os gastos com quebra mensal.
     """
     try:
+        # A engine só é invocada no momento em que a função roda
         engine = get_database_engine()
         
-        # Ajustamos os filtros com base no comportamento real dos dados:
-        # Pega apenas o que não for transferência entre suas contas e que tenha valor de gasto real (> 0)
         query = """
             SELECT 
-                purchased_at,
+                TO_CHAR(purchased_at, 'YYYY-MM') as mes_competencia,
                 amount_brl,
                 payment_type,
                 category_name
@@ -55,64 +25,96 @@ def carregar_dados_do_postgres():
         df = pd.read_sql(query, engine)
         return df
     except Exception as e:
-        print(f"Erro ao conectar ou ler dados do PostgreSQL: {e}")
+        print(f"❌ Erro ao ler dados do PostgreSQL: {e}")
         sys.exit(1)
 
-def gerar_dashboard_gastos():
+def gerar_dashboard_gastos_mensal():
+    # Print imediato para você ter certeza que o script iniciou
+    print("🔄 [DEBUG] O script iniciou! Buscando dados no banco...")
+    
     df = carregar_dados_do_postgres()
     
-    if df.empty:
-        print("Nenhum dado encontrado com os filtros aplicados.")
+    if df is None or df.empty:
+        print("⚠️ [DEBUG] O banco retornou um DataFrame vazio.")
         return
 
+    print(f"✅ [DEBUG] {len(df)} linhas carregadas. Tratando dados...")
+
     # --- TRATAMENTO ---
-    # Garante que a categoria comece com letra maiúscula para o gráfico
-    df['category_name'] = df['category_name'].fillna('Não Categorizado').str.strip().str.capitalize()
-    
-    # Padroniza o nome do tipo de pagamento (PIX, Credit Card, etc.)
+    df['category_name'] = df['category_name'].fillna('Não Categorizado').str.strip()
     df['payment_type'] = df['payment_type'].fillna('Outros').str.strip().str.upper()
     
-    # Agrupa por categoria e tipo de pagamento para consolidar os valores do gráfico
-    df_agrupado = df.groupby(['category_name', 'payment_type'], as_index=False)['amount_brl'].sum()
-    df_agrupado = df_agrupado.sort_values(by='amount_brl', ascending=False)
+    # Filtra as TOP 10 categorias com maior volume histórico de gastos
+    top_categories = df.groupby('category_name')['amount_brl'].sum().nlargest(10).index
+    df_filtrado = df[df['category_name'].isin(top_categories)].copy()
+    df_filtrado['category_name'] = df_filtrado['category_name'].str.capitalize()
+
+    # Agrupa por Mês, Categoria e Tipo de Pagamento
+    # Agrupa por Mês, Categoria e Tipo de Pagamento
+    # Agrupa por Mês, Categoria e Tipo de Pagamento
+    df_agrupado = df_filtrado.groupby(['mes_competencia', 'category_name', 'payment_type'], as_index=False)['amount_brl'].sum()
+    
+    # 1. Garante a ordenação correta no Pandas
+    df_agrupado = df_agrupado.sort_values(by='mes_competencia', ascending=True)
+    
+    # 2. CAPTURA A LISTA ÚNICA E CRONOLÓGICA DE TODOS OS MESES DO SEU HISTÓRICO
+    lista_meses_ordenada = sorted(df_agrupado['mes_competencia'].unique())
+
+    print(f"📊 [DEBUG] Renderizando gráfico para {len(df_agrupado)} combinações de meses/categorias...")
 
     # --- GRÁFICO ---
     fig = px.bar(
         df_agrupado,
-        x='category_name',
+        x='mes_competencia',          
         y='amount_brl',
         color='payment_type',
-        title='Distribuição de Gastos por Categoria e Meio de Pagamento',
-        labels={'category_name': 'Categoria', 'amount_brl': 'Total Gasto (R$)', 'payment_type': 'Meio de Pagamento'},
-        barmode='group', # Mantém as barras de Pix/Cartão lado a lado por categoria
+        facet_col='category_name',     
+        facet_col_wrap=1,              
+        title='Evolução Mensal de Gastos por Categoria e Meio de Pagamento (Top 10 Categorias)',
+        labels={'mes_competencia': 'Mês', 'amount_brl': 'Total Gasto (R$)', 'payment_type': 'Meio de Pagamento'},
+        barmode='group',
         text='amount_brl',
-        width=1500,
-        height=800
+        width=3600,
+        height=320 * len(top_categories), 
+        facet_row_spacing=0.06            
     )
 
-    # Rótulos de dados verticais e sem o corte teimoso do Plotly
+    # Rótulos de dados compactos verticais nas barras
     fig.update_traces(
-        texttemplate='R$ %{text:.2f}',
+        texttemplate='R$ %{text:.0f}',    
         textposition='outside',
         cliponaxis=False,
         textangle=-90,
-        textfont=dict(size=10, color='black'),
+        textfont=dict(size=9, color='black'),
         constraintext='none'
     )
 
-    # Ajustes de layout para o eixo X respirar sem encavalar os nomes
+    # Ajustes de Layout e Eixos
     fig.update_layout(
-        xaxis={
-            'type': 'category',
-            'categoryorder': 'total descending', # Maior gasto da esquerda para a direita
-            'tickangle': -45
-        },
-        margin=dict(t=100, b=140, l=70, r=40),
-        yaxis=dict(range=[0, df_agrupado['amount_brl'].max() * 1.30]), # Folga para o texto vertical
+        margin=dict(t=120, b=140, l=80, r=60), 
         uniformtext_mode=False
     )
+    
+    # Limpa o texto das anotações do topo
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1], font=dict(size=12, weight='bold')))
+    
+    # Reseta os eixos Y para ficarem independentes por categoria
+    fig.update_yaxes(matches=None, showticklabels=True) 
+    
+    # --- AQUI ESTÁ A SOLUÇÃO DEFINITIVA PARA O EIXO X ---
+    # Forçamos o tipo para 'array' e injetamos a lista ordenada como os ticks oficiais do gráfico
+    fig.update_xaxes(
+        showticklabels=True, 
+        tickangle=-45, 
+        type='category',             # <-- Mantido como 'category'
+        tickmode='array',            # <-- Adicionado para aceitar os vetores abaixo
+        tickvals=lista_meses_ordenada,
+        ticktext=lista_meses_ordenada
+    )
 
+    print("🚀 Abrindo o dashboard definitivo no seu navegador...")
     fig.show()
 
+# O ponto de entrada padrão que garante a execução via flag -m
 if __name__ == "__main__":
-    gerar_dashboard_gastos()
+    gerar_dashboard_gastos_mensal()
