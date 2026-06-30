@@ -22,6 +22,8 @@ ORDER BY sum(i.montante_total) DESC;
 SELECT MAX(transaction_date) FROM postgres_raw.stock_movements;
 
 
+select * from analytics.fct_unified_payments;
+
 
 
 

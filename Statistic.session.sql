@@ -5,10 +5,10 @@ FROM analytics.fct_investments_portfolio i
 GROUP BY i.investor
 ORDER BY sum(i.montante_total) DESC;
 
--- Sum of all the portfolio grouped by investor
+-- Sum of all the portfolio grouped by investor1
 SELECT
     i.investor,
-    'R$ ' || 
+    'R$ ' ||
     REPLACE(
         REPLACE(
             REPLACE(
