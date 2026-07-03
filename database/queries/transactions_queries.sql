@@ -22,8 +22,15 @@ ORDER BY sum(i.montante_total) DESC;
 SELECT MAX(transaction_date) FROM postgres_raw.stock_movements;
 
 
-select * from analytics.fct_unified_payments;
+select * from analytics.fct_unified_payments
+where payment_type like 'credit_card';
 
+-- To discover the spend made without proper descriptio
+SELECT description, COUNT(*), SUM(amount_brl) as total
+FROM analytics.fct_unified_payments
+WHERE category_name = 'Não Classificado'
+GROUP BY 1
+ORDER BY total DESC;
 
 
 
