@@ -32,5 +32,10 @@ WHERE category_name = 'Não Classificado'
 GROUP BY 1
 ORDER BY total DESC;
 
+SELECT DISTINCT description
+FROM analytics.fct_unified_payments
+WHERE category_name = 'Não Classificado'
+ORDER BY description ASC;
+
 
 

@@ -43,9 +43,9 @@ def gerar_dashboard_gastos_mensal():
 
     # --- ADICIONE ESTAS DUAS LINHAS AQUI ---
     # 1. Força o Pandas a entender a coluna como uma data legítima
-    df['mes_competencia'] = pd.to_datetime(df['mes_competencia'])
+    # df['mes_competencia'] = pd.to_datetime(df['mes_competencia'])
     # 2. Agora sim formatamos no padrão string 'YYYY-MM' mantendo a ordenação cronológica
-    df['mes_competencia'] = df['mes_competencia'].dt.strftime('%Y-%m')
+    # df['mes_competencia'] = df['mes_competencia'].dt.strftime('%Y-%m')
 
     # --- TRATAMENTO ---
     print(f"✅ [DEBUG] {len(df)} linhas carregadas. Tratando dados...")
