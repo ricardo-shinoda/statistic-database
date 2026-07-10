@@ -37,5 +37,15 @@ FROM analytics.fct_unified_payments
 WHERE category_name = 'Não Classificado'
 ORDER BY description ASC;
 
+SELECT 
+    payment_id,
+    description,
+    COUNT(*) as matches_encontrados,
+    SUM(amount_brl) as valor_somado_indevido
+FROM analytics.fct_unified_payments -- ou fct_unified_payments
+GROUP BY 1, 2
+HAVING COUNT(*) > 1
+ORDER BY matches_encontrados DESC;
+
 
 
