@@ -37,4 +37,39 @@ STATISTIC/
 │   └── utils.py                 # Shared helper functions
 ├── docker-compose.yml           # PostgreSQL container orchestrator
 ├── requirements.txt             # Python dependencies
-└── .env                         # Local environment variables configuration
+└── .env                         # Local environment variables configuration (Git ignored)
+```
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+* Docker & Docker Compose installed.
+* Python 3.10+ installed.
+* A Google Cloud Project with the Google Drive API enabled and a Service Account key downloaded (placed inside `configs/service.account.json`).
+
+### Quick Setup & Installation
+
+Run the following block of commands in your terminal to set up the environment, spin up the database container, and install the required dependencies:
+
+```bash
+# 1. Setup the Python Virtual Environment & Install Dependencies
+python -m venv .venv
+source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+pip install -r requirements.txt
+
+# 2. Start the PostgreSQL Container
+docker compose up -d
+```
+
+### Running the Pipelines
+
+Once the database is running and your `.env` configuration file is filled with your credentials, you can execute the ingestion and processing scripts sequentially or as needed:
+
+```bash
+# Ingest and process financial expenses from Google Drive
+python src/script/pipelines_elt/append_ingest_expenses.py
+
+# Fetch and load current stock price data
+python src/script/pipelines_elt/stock_price.py
+```
