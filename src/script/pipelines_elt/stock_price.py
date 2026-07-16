@@ -6,7 +6,6 @@ engine = get_database_engine()
 
 with engine.begin() as conn:
 
-    # 1. Busca os tickers usando a conexão do SQLAlchemy
     query_tickers = text("""
         SELECT DISTINCT ticker 
         FROM postgres_raw.stock_movements 
@@ -15,7 +14,6 @@ with engine.begin() as conn:
     result_tickers = conn.execute(query_tickers)
     tickers = [row[0] for row in result_tickers.fetchall()]
 
-    # 3. Validates existence of the current price table within the staging/raw schema
     create_table_query = text("""
         CREATE TABLE IF NOT EXISTS postgres_raw.current_prices (
             ticker VARCHAR(10) PRIMARY KEY,
@@ -27,7 +25,6 @@ with engine.begin() as conn:
 
     print(f"Atualizando preços para os tickers: {tickers}")
 
-    # 4. Ticker translation dictionary and edge-case handling for market data
     ticker_mapping = {
         'Bitcoin': 'BTC-BRL',
         'ETH': 'ETH-BRL',
