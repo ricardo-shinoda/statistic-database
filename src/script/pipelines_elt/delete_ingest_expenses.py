@@ -140,10 +140,13 @@ if __name__ == "__main__":
     # 2. Process invoices
     print("\n📦 Verificando Faturas no Drive...")
     query = f"'{GOOGLE_DRIVE_INVOICE}' in parents and name contains '.zip' and trashed = false"
-    results = service.files().list(q=query, fields="files(id, name)").execute()
+    # Adicionado pageSize=1000 para forçar a busca de todos os arquivos do diretório
+    results = service.files().list(q=query, pageSize=1000, fields="files(id, name)").execute()
     files = results.get('files', [])
 
     if files:
+        # Ordenando alfabeticamente para pegar 202601 até 202608 em ordem
+        files = sorted(files, key=lambda x: x['name'])
         print(f"🔍 Encontrados {len(files)} arquivos ZIP. Iniciando processamento...")
         for file in files:
             print(f"👉 Baixando: {file['name']}")

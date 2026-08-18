@@ -59,7 +59,7 @@ def clean_currency(series):
     return series.apply(clean_single_value)
 
 def get_processed_files():
-    """Verify in DB which invoices existis to avoid duplicity"""
+    """Verify in DB which invoices exists to avoid duplicity"""
     try:
         with engine.connect() as conn:
             df = pd.read_sql("SELECT DISTINCT arquivo_origem FROM postgres_raw.payment_card", conn)

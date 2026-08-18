@@ -47,5 +47,7 @@ GROUP BY 1, 2
 HAVING COUNT(*) > 1
 ORDER BY matches_encontrados DESC;
 
+SELECT * FROM analytics.seeds_gas_stations;
+
 
 
