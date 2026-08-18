@@ -3,7 +3,6 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 import os
 
-# Database Connection String
 DB_URL = 'postgresql://ricardo:3136@localhost:5432/statistic_db'
 
 def load_merchant_mappings():

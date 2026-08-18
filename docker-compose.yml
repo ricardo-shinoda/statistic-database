@@ -19,7 +19,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      MB_DB_TYPE: h2  # O Metabase usa um banco interno leve para guardar seus gráficos salvos
+      MB_DB_TYPE: h2
     restart: always
     networks:
       - statistic_network

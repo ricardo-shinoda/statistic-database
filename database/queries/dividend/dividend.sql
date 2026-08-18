@@ -1,4 +1,3 @@
--- total amount of divideds received by investor
 select 
     investor, 
     sum(valor_recebido) as total_proventos_historico
@@ -21,7 +20,7 @@ select
     month,
     round(sum(total_amount)::numeric, 2) as total_proventos
 from postgres_raw.stock_movements
-where transaction_type not in ('Compra', 'Venda', 'Calculo IR - Venda', 'Imposto a pagar') -- Garante que só entram rendimentos/entradas
+where transaction_type not in ('Compra', 'Venda', 'Calculo IR - Venda', 'Imposto a pagar')
 group by investor, month
 order by investor ASC, month DESC;
 

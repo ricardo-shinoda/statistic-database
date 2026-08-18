@@ -23,18 +23,11 @@ try:
 except locale.Error:
     locale.setlocale(locale.LC_TIME, 'pt_BR')
 
-# 1. Primeiro convertemos para datetime real para garantir a ordenação cronológica correta
-# df['data_aux'] = pd.to_datetime(df['mes_competencia'], format='%b. %Y')
 df['data_aux'] = pd.to_datetime(df['mes_competencia'], format='%Y-%m')
 df = df.sort_values('data_aux')
 
-# 2. Agora criamos a string final formatada (já na ordem certa)
 df['mes_competencia'] = df['data_aux'].dt.strftime('%Y-%m')
 
-# Renderiza o gráfico
-# Renderiza o gráfico passando a coluna de texto explicitamente
-# Renderiza o gráfico passando a coluna de texto explicitamente
-# 1. Aumentamos a largura (width) para dar espaço horizontal às barras
 fig = px.bar(
     df, 
     x='mes_competencia', 
@@ -44,11 +37,10 @@ fig = px.bar(
     labels={'mes_competencia': 'Mês de Competência', 'total_dividendos': 'Total (R$)', 'investor': 'Investidor'},
     barmode='group',
     text='total_dividendos',
-    width=3000,                     # <-- Janela bem mais larga para espalhar os meses
-    height=800                      # Altura proporcional estável
+    width=3000,
+    height=800
 )
 
-# Configuração dos valores acima das colunas (mantida)
 fig.update_traces(
     texttemplate='R$ %{text:.2f}',  
     textposition='outside',         
@@ -58,14 +50,13 @@ fig.update_traces(
     constraintext='none'            
 )
 
-# 2. Ajustes de layout e inclinação dos meses no eixo X
 fig.update_layout(
     xaxis={
         'type': 'category', 
         'categoryorder': 'category ascending',
-        'tickangle': -45            # <-- Inclina os meses em 45° para não encavalarem
+        'tickangle': -45
     }, 
-    margin=dict(t=100, b=120, l=60, r=40), # Ajuste de margens para os textos não cortarem
+    margin=dict(t=100, b=120, l=60, r=40),
     yaxis=dict(range=[0, df['total_dividendos'].max() * 1.25]), 
     uniformtext_mode=False          
 )

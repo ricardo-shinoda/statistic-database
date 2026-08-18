@@ -45,9 +45,9 @@ fig = px.line(
 fig.update_layout(
     xaxis={
         'type': 'date',
-        'dtick': 'M1',        # Month to month
-        'tickformat': '%Y-%m', # Clean label
-        'tickangle': -90       # Rotationing
+        'dtick': 'M1',
+        'tickformat': '%Y-%m',
+        'tickangle': -90
     }
 )
 

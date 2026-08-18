@@ -10,8 +10,6 @@ import re
 from pathlib import Path
 from src.script.utils import get_database_engine
 
-# --- ENVIRONMENT CONFIGURATION ---
-
 root_path = Path(__file__).parent.parent.parent.parent
 
 engine = get_database_engine()
@@ -25,7 +23,6 @@ else:
 print(f"DEBUG: Caminho Raiz: {root_path}")
 print(f"DEBUG: Buscando credenciais em: {SERVICE_ACCOUNT_FILE}")
 
-# --- USE THIS IF I WANT TO KEEP THE DATA AND JUST APPEND ---
 def prepare_database(engine):
     print("🛠️ Preparing ingestion environment...")
     with engine.connect() as conn:
