@@ -43,6 +43,8 @@ SELECT * FROM analytics.fct_unified_payments;
 
 select * from analytics.fct_unified_payments;
 
+select * from analytics.fct_investments;
+
 --         English & Adapted: Find all unique descriptions in credit card 
 -- statements that contain the letter "R" (case-insensitive).
 

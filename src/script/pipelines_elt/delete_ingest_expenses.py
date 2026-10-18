@@ -7,8 +7,16 @@ import io
 import zipfile
 import os
 import re
-from src.script.utils import get_database_engine
 from pathlib import Path
+import sys
+from pathlib import Path
+
+# Adds the project root (statistic-database) to sys.path
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
+
+from src.script.utils import get_database_engine
 
 # --- ENVIRONMENT CONFIGURATION
 root_path = Path(__file__).parent.parent.parent.parent
