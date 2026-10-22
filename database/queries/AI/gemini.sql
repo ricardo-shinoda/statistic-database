@@ -2,7 +2,7 @@ SELECT * FROM analytics.fct_unified_payments;
 
 SELECT
     purchased_at,
-    sum(amount_brl) as total_amount,
+    sum(amount_brl) as total_amount,`   
     description
 FROM analytics.fct_unified_payments
 WHERE description ilike '%ifd%'
