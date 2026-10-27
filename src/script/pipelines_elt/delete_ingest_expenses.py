@@ -19,7 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.script.utils import get_database_engine
 
 # --- ENVIRONMENT CONFIGURATION
-root_path = Path(__file__).parent.parent.parent.parent
+root_path = PROJECT_ROOT
 engine = get_database_engine()
 creds_env_value = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 
@@ -60,15 +60,6 @@ def clean_currency(series):
         except ValueError: return 0.0
     return series.apply(clean_single_value)
 
-def get_processed_files():
-    """Verify in DB which invoices existis to avoid duplicity"""
-    try:
-        with engine.connect() as conn:
-            df = pd.read_sql("SELECT DISTINCT arquivo_origem FROM postgres_raw.payment_card", conn)
-            return df['arquivo_origem'].tolist()
-    except:
-        return []
-
 def download_specific_file(service, file_id):
     request = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
@@ -103,18 +94,16 @@ def process_controle_excel(file_buffer):
         df.to_sql(table, engine, schema='postgres_raw', if_exists='replace', index=False)
         print(f"✅ Tabela {table} (Aba: {sheet}) atualizada.")
 
-def process_faturas_zip(file_buffer):
-    """Open the protected ZIP and load only the new csv"""
-    already_done = get_processed_files()
+def process_faturas_zip(file_buffer, processed_in_session):
+    """Abre o ZIP protegido e carrega os CSVs que ainda não foram processados nesta sessão"""
     zip_password = os.getenv('ZIP_PASSWORD')
     pwd_bytes = zip_password.encode('utf-8') if zip_password else None
     
     with zipfile.ZipFile(file_buffer) as z:
         for filename in z.namelist():
             if filename.endswith('.csv'):
-                if filename not in already_done:
+                if filename not in processed_in_session:
                     try:
-                        # Passamos a senha aqui no pwd=...
                         with z.open(filename, pwd=pwd_bytes) as f:
                             df = pd.read_csv(f, sep=';', encoding='utf-8-sig', on_bad_lines='skip')
                             df = df.dropna(how='all')
@@ -125,6 +114,7 @@ def process_faturas_zip(file_buffer):
                             
                             df['arquivo_origem'] = filename
                             df.to_sql('payment_card', engine, schema='postgres_raw', if_exists='append', index=False)
+                            processed_in_session.add(filename)
                             print(f"   ✅ Nova fatura inserida: {filename}")
                     except RuntimeError as e:
                         if "password required" in str(e):
@@ -132,7 +122,7 @@ def process_faturas_zip(file_buffer):
                         else:
                             print(f"   ❌ Erro ao abrir {filename}: {e}")
                 else:
-                    print(f"   ⏭️ Pulando {filename} (já existe no banco).")
+                    print(f"   ⏭️ Pulando {filename} (já processado nesta execução).")
 
 # --- MAIN EXECUTION ---
 
@@ -148,18 +138,17 @@ if __name__ == "__main__":
     # 2. Process invoices
     print("\n📦 Verificando Faturas no Drive...")
     query = f"'{GOOGLE_DRIVE_INVOICE}' in parents and name contains '.zip' and trashed = false"
-    # Adicionado pageSize=1000 para forçar a busca de todos os arquivos do diretório
     results = service.files().list(q=query, pageSize=1000, fields="files(id, name)").execute()
     files = results.get('files', [])
 
     if files:
-        # Ordenando alfabeticamente para pegar 202601 até 202608 em ordem
         files = sorted(files, key=lambda x: x['name'])
         print(f"🔍 Encontrados {len(files)} arquivos ZIP. Iniciando processamento...")
+        processed_in_session = set()
         for file in files:
             print(f"👉 Baixando: {file['name']}")
             zip_fh = download_specific_file(service, file['id'])
-            process_faturas_zip(zip_fh)
+            process_faturas_zip(zip_fh, processed_in_session)
     else:
         print("⚠️ Nenhum arquivo ZIP encontrado na pasta de faturas.")
 
